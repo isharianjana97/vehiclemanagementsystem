@@ -28,7 +28,7 @@ include '../model/brand_model.php';
      
      <script>
      
-     loadCategory=function(catid)
+     loadCategory=function(catid) //load category
      {
          var url="../controller/product_controller.php?status=load_category";
           $.post(url,{cat_id:catid},function(data){
@@ -161,14 +161,14 @@ include '../model/brand_model.php';
                         
                             
                             <div class="col-md-6">
-                                <div class="row">
+                                <div class="row"> <!-- add category button -->
                                 <div class="col-md-12">
-                                     <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal"> <!- to pop up modal->
+                                     <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal"> <!-- to pop up modal -->
                                          
-                                         <span class="glyphicon glyphicon-plus "></span>
+                                         <span class="glyphicon glyphicon-plus "></span>  <!-- add category button -->
                                          Add category</a>
                                 </div>
-                            </div>
+                            </div> <!-- add category button -->
                             <h4 align="center"> Categories </h4>
                             <table class="table">
                                 <thead>
@@ -191,7 +191,7 @@ include '../model/brand_model.php';
                                         <th><?php echo ucwords($cat_row["cat_name"])?></th>
                                         <th>
                                         <a  href="#" class="btn btn-warning" data-toggle="modal" data-target="#editCat"
-                                            onclick="loadCategory('<?php echo $cat_id ?>');"> <!- pass catid to the function ->
+                                            onclick="loadCategory('<?php echo $cat_id ?>');"> <!-- pass catid to the function -->
                                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit
                                             </a>
                                         </th>
@@ -205,13 +205,13 @@ include '../model/brand_model.php';
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">
+                            <div class="row"> <!-- add brand button -->
                                 <div class="col-md-12">
                                     <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalBrand">  <!- # can use to be on the same page ->
-                                    <span class="glyphicon glyphicon-plus"> </span>&nbsp; Add Brand
+                                    <span class="glyphicon glyphicon-plus"> </span>&nbsp; Add Brand     <!-- add brand button -->
                                     </a>
                                 </div>
-                            </div>
+                            </div> <!-- add brand button -->
                            <h4 align="center"> Brand </h4> 
                            <table class="table">
                                 <thead>
@@ -232,7 +232,7 @@ include '../model/brand_model.php';
                                         <th><?php echo ucwords($brand_row["brand_name"])?></th>
                                         
                                 <th>
-                                           <a href="#" class="btn btn-success" data-toggle="modal" data-target="#modalBrandEdit"
+                                           <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#modalBrandEdit"
                                              onclick="loadBrand('<?php echo $brand_id ?>');"> 
                                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit
                                             </a>
@@ -252,7 +252,7 @@ include '../model/brand_model.php';
         </div>
         
         <!-- Category Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <div class="modal fade" id="myModal" role="dialog"> <!--to identify which modal should appear id -->
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -268,7 +268,7 @@ include '../model/brand_model.php';
                     <label> Category Name </label>
                 </div>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" name="cat_name"/>
+                    <input type="text" class="form-control" name="cat_name"/> <!--came under post method -->
                 </div>
             </div>
             
@@ -286,7 +286,7 @@ include '../model/brand_model.php';
   </div>
         <!--- Edit Category Model  -->
         
-        <div class="modal fade" id="editCat" role="dialog">
+        <div class="modal fade" id="editCat" role="dialog"> <!--to identify which modal should appear id -->
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -320,7 +320,7 @@ include '../model/brand_model.php';
         
         
                 <!-- Brand Modal -->
-  <div class="modal fade" id="modalBrand" role="dialog">
+  <div class="modal fade" id="modalBrand" role="dialog"> <!--to identify which modal should appear id -->
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -355,7 +355,7 @@ include '../model/brand_model.php';
                 
                 <!--- Edit Brand Model  -->
         
-       <div class="modal fade" id="modalBrandEdit" role="dialog">
+       <div class="modal fade" id="modalBrandEdit" role="dialog"> <!--to identify which modal should appear id -->
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -383,6 +383,7 @@ include '../model/brand_model.php';
       
     </div>
   </div>
+    </body>
       
 </html> 
 

@@ -9,9 +9,9 @@ $userObj=new User();
 $roleResult=$userObj->getUserRoles();
 
 
-$user_id=$_GET["user_id"];
+$user_id=$_GET["user_id"]; //get user id
 
-$user_id= base64_decode($user_id);
+$user_id= base64_decode($user_id); //decode the original value
 
 $userResult= $userObj->getSpecificUser($user_id);
 
@@ -53,34 +53,35 @@ $userrow=$userResult->fetch_assoc(); // will convert the record onto associative
                     </div>
                     </div>
                 <hr/>
-                <div class="row">
+               
+                 <div class="row">
                     <div class="col-md-12">
                         <ul class="breadcrumb">
-                            <li> <a href="dashboard.php">Dashboard</a></li>
-                            <li> <a href="user.php">User Management</a></li>
-                            <li> View User</li>
+                            <li> Dashboard</li>
                         </ul>
                     </div> 
                 </div>
+                
+               <!--  <div class="row">
+                  <div class="col-md-12">
+                       <ul class="breadcrumb">
+                            <li> <a href="dashboard.php">Dashboard</a></li>
+                            <li> <a href="user.php">User Management</a></li>
+                            <li> View User</li> 
+                        </ul>
+                    </div> 
+                </div>-->
                 <div class="row">
                     <div class="col-md-3">
-                        <ul class="list-group">
-                            <a href="add-user.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                Add Users
-                            </a>
-                            <a href="view-user.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                View Users
-                            </a>
-                        </ul>
-                    </div>
+                    <?php
+                                        include_once '../includes/user-navigation.php';
+                    ?>
+                </div>
                     <div class="col-md-9">
-                        <form action="../controller/user_controller.php?status=add_user " enctype="multipart-form" method="post">
+                        <form action="../controller/user_controller.php?status=add_user " enctype="multipart-form" method="post"> <!-- connection to add user page -->
+
                             
-                            <div class="row">
+                           <div class="row">
                                 <div class="col-md-6 col-md-offset-3" id="alertdiv">&nbsp;</div>
                             </div> 
                             <?php

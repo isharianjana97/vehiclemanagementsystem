@@ -63,7 +63,9 @@ else{
         
         $userrow=$userResult-> fetch_assoc();
         
-        $_SESSION["user"]=$userrow;
+        $_SESSION["user"]=$userrow; //assign user to user row
+        
+        
         
         ?>
         <script>window.location="../view/dashboard.php"</script>

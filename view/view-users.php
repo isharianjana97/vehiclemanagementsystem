@@ -75,7 +75,7 @@ include '../commons/sessions.php';
                             </thead>
                             <tbody>
                                 <?php
-                                while($user_row=$userResult->fetch_assoc())
+                                while($user_row=$userResult->fetch_assoc()) //get all users
                                 {
                                      $user_id=  base64_encode($user_row["user_id"]);
 
@@ -162,8 +162,9 @@ include '../commons/sessions.php';
     <!-- when data stored make the user table in to data table-->
     <script>
             $(document).ready(function(){
-                $("#usertable").DataTable();
+                $("#usertable").DataTable();  //make the user table a datatable 
             });
     </script>
 
 </html> 
+ -  

@@ -22,7 +22,7 @@ class User{
         $result=$conn->query($sql);
         return $result;
     }
-    public function getUserRoles()
+    public function getUserRoles()//
     {
         $conn= $GLOBALS["conn"];
         $sql="SELECT * FROM role";
@@ -100,7 +100,7 @@ class User{
 
     public function  addUserLogin($user_id,$username,$nic)
     {
-        $pw=  sha1($nic);
+        $pw=  ($nic);
         $conn= $GLOBALS["conn"];
         $sql="INSERT INTO login(login_username,login_password,user_id)VALUES('$username','$pw','$user_id')";
         $result=$conn->query($sql) or die($conn->error);  

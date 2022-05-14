@@ -6,11 +6,15 @@
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/view-users.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/user.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/login.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/includes/email_includes.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/product-analysis.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/commons/PHPMailer/PHPMailerAutoload.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/js/productvalidation.js</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/js/loginvalidation.js</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/model/login_model.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/includes/user-navigation.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/index.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/js/purchasingvalidation.js</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/view-user.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/model/category_model.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/controller/product_controller.php</file>
@@ -24,12 +28,16 @@
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/view-products.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/controller/login_controller.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/edit-user.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/requisition_note.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/controller/purchasing_controller.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/add-user.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/generated_stock_report.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/includes/main-product-navigation.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/model/inventory_model.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/model/item_model.php</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/purchasing.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/js/uservalidation.js</file>
+            <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/newEmptyPHP.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/inventory.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/view/product.php</file>
             <file>file:/C:/xampp/htdocs/bit_vehicle_manage/model/purchasing_model.php</file>

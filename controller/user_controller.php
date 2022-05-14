@@ -20,28 +20,28 @@ else
    {
        case "get_functions":
            
-          $role_id= $_POST["role_id"];
+          $role_id= $_POST["role_id"]; // process the role id
            
-           $moduleResult=$userObj->getModulesByRole($role_id);
+           $moduleResult=$userObj->getModulesByRole($role_id);  // get modules for roles for each row
            
-           while($module_row=$moduleResult->fetch_assoc())
+           while($module_row=$moduleResult->fetch_assoc()) // array module result
            {
                $module_id=$module_row["module_id"];
                
-               $functionResult=$userObj->getModuleFunctions($module_id);
+               $functionResult=$userObj->getModuleFunctions($module_id); // modules functions in function result
                
              ?>  
                 <div class="col-md-4">
                     <label class="control-label"><?php  echo $module_row["module_name"];  ?></label>    <!-- GET modules -->
                     <br/>
                     <?php
-                        while($function_row=$functionResult->fetch_assoc())
+                        while($function_row=$functionResult->fetch_assoc()) // array function result
                         {
                           ?>
                     <input type="checkbox" class="userfunctions" name="user_function[]" value="<?php echo $function_row["function_id"]; ?>"
                            checked="checked"
                            />
-                    &nbsp; <?php echo ucwords($function_row["function_name"]);  ?>
+                    &nbsp; <?php echo ucwords($function_row["function_name"]);  ?>   <!-- GET functions of the modules -->
                         <br/>
                             <?php
                         }
@@ -54,7 +54,7 @@ else
            
            break;
            
-       case "add_user":
+       case "add_user":     
            
            $fname=$_POST["fname"];
            $lname=$_POST["lname"];
@@ -107,6 +107,7 @@ else
                     ///  regular Expression validation
                     $patnic="/[0-9]{9}[vVxX]$/";
                     $patcno1="/^\+94[0-9]{9}$/";
+                    $patcno2= "/^\+947[0-9]{8}$/";
                     $patemail="/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z]{2,6})+$/";
                     
                     // first parameter is the pattern 2nd one is the variable
@@ -118,6 +119,11 @@ else
                      if(!preg_match($patcno1, $cno1))
                     {
                         throw new Exception("Contact Number 1 is Invalid!!!");
+                    }
+                    
+                    if(!preg_match($patcno2, $cno2))
+                    {
+                      throw new Exception("Contact Number 2 is Invalid!!!");
                     }
                     
                     if(!preg_match($patemail, $email))
@@ -136,6 +142,8 @@ else
                     {
                        
                      $imagename=$_FILES["user_img"]["name"];  //  image name
+                     
+                   
                          //  appending current timestamp to make the image unique
                         
                      $imagename="".time()."_".$imagename;
@@ -164,7 +172,7 @@ else
    $user_id= $userObj->addUser($fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role); //Calling the function
                     if($user_id>0)
                     {
-                        $userObj->addUserLogin($user_id, $email, $nic);
+                        $userObj->addUserLogin($user_id, $email, $nic); //to add user login
        
                         
                             ////  if user is added succesfully

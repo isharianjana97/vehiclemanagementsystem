@@ -45,7 +45,7 @@ class Category{
         $result=$conn->query($sql);
         
     }
-    
+       
 
 
 

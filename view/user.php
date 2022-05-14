@@ -64,20 +64,13 @@ $moduleArray= $_SESSION["user_module"];
                     </div> 
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <ul class="list-group">
-                            <a href="add-user.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                Add Users
-                            </a>
-                            <a href="view-users.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                View Users
-                            </a>
-                        </ul>
-                    </div>
+                    
+
+                <div class="col-md-3">
+                    <?php
+                                        include_once '../includes/user-navigation.php';
+                    ?>
+                </div>
                     <div class="col-md-9">
                         <div class="col-md-6">
                             <div class="panel panel-default" style="background-color: #e67949; color: #FFF; height: 200px">

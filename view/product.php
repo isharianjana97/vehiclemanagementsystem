@@ -4,6 +4,19 @@ include '../commons/sessions.php';
 ///  getting user module information
 $moduleArray= $_SESSION["user_module"];
 
+ include '../model/product_model.php';
+    $category1Obj = new Product();
+    $category2Obj = new Product();
+    $category3Obj = new Product();
+    
+    $category1Result=$category1Obj->getCategory1Count();
+    $category2Result=$category2Obj->getCategory2Count();
+    $category3Result=$category3Obj->getCategory3Count();
+    
+    $category1row=$category1Result->fetch_assoc(); //as getting 1 record no while loop is needed
+    $category2row=$category2Result->fetch_assoc(); //as getting 1 record no while loop is needed
+    $category3row=$category3Result->fetch_assoc(); //as getting 1 record no while loop is needed
+
 ?>
 <html>
     <head>
@@ -51,32 +64,50 @@ $moduleArray= $_SESSION["user_module"];
                     <div class="col-md-3">
                         <ul class="list-group">
                           <?php include_once '../includes/main-product-navigation.php';?>
+                        </ul>
                     </div>
                     <div class="col-md-9">
                         <div class="col-md-6">
                             <div class="panel panel-default" style="background-color: #e67949; color: #FFF; height: 200px">
-                                <h2 align="center"> Commodities that will remain upto next 7 days </h2>
-                                <h1 align="center">7</h1>
+                                <h2 align="center"> Category Count 1
+                                </h2>
+                                <h1 align="center">
+                                  <?php
+                                    echo $category1row["category1Count"];  // to show the Category 1 products
+                                ?>
+                                </h1>
                             </div> 
                         </div>
                         <div class="col-md-6">
                             <div class="panel panel-default" style="background-color: #e67949; color: #FFF; height: 200px">
-                                <h2 align="center"> Category Count 1 </h2>
-                                <h1 align="center">12</h1>
+                                <h2 align="center"> 
+                                Category Count 2
+                                </h2>
+                                <h1 align="center">
+                                      <?php
+                                    echo $category2row["category2Count"];  // to show the Category 1 products
+                                ?>
+                                </h1>
                             </div> 
                         </div>
                         <div class="col-md-6">
-                            <div class="panel panel-default" style="background-color: #e67949; color: #FFF; height: 200px">
-                                <h2 align="center"> Category Count 2 </h2>
-                                <h1 align="center">13</h1>
+                           <div class="panel panel-default" style="background-color: #e67949; color: #FFF; height: 200px">
+                                <h2 align="center"> 
+                                Category Count 3
+                                </h2>
+                                <h1 align="center">
+                                      <?php
+                                    echo $category3row["category3Count"];  // to show the Category 1 products
+                                ?>
+                                </h1>
                             </div> 
                         </div>
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <div class="panel panel-default" style="background-color: #875139; color: #FFF; height: 200px">
                                 <h2 align="center"> Category Count 2</h2>
                                 <h1 align="center">8</h1>
                             </div> 
-                        </div>
+                        </div>//-->
                     </div>
                 </div>
         </div>

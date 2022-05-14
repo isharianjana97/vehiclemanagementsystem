@@ -5,8 +5,8 @@
         &nbsp;
         Add User
     </a> <!--product-->
-     <a href="view-user.php" class="list-group-item">
-        <span class="glyphicon glyphicon-plus"></span>
+     <a href="view-users.php" class="list-group-item">
+        <span class="glyphicon glyphicon-search"></span>
         &nbsp;
         View Users <!--categories and brands-->
     </a>

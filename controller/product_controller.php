@@ -26,14 +26,14 @@ else
      $productObj= new Product();
 
 
-   $status=$_REQUEST["status"];
+   $status=$_REQUEST["status"]; //collect data after submitting 
    
    switch ($status)
    {
-     case "add_category":
+     case "add_category":  // add categort
          try
          {
-         $cat_name=$_POST["cat_name"];
+         $cat_name=$_POST["cat_name"]; //from modal name
          if ($cat_name=="")
          {
              throw new Exception("Category name Cannot Be Empty !!!"); 
@@ -103,6 +103,46 @@ else
            
         break;
         
+        case "add_stock":  // add Stock
+         try
+         {
+           $product_id=$_POST["product_id"];
+           $stock_date=$_POST["stock_date"];
+           $stock_qty=$_POST["stock_qty"];
+           
+           $stockObj->addStock($product_id, $stock_qty, $stock_date);
+         //$cat_name=$_POST["quantity"]; //from modal name
+         if ($quantity=="")
+         {
+             throw new Exception("Quantity Cannot Be Empty !!!"); 
+         }
+        
+                $stock_id=$stockObj->addStock($cat_name);
+                if($cat_id>0)
+                {
+                    $msg="Stock $quantity Added Succesfully!";
+                    $msg=  base64_encode($msg);
+                 ?>   
+                  <script> window.location="../view/view-products.php?msg=<?php echo $msg; ?>"</script>
+                 <?php   
+                }
+
+         
+         }
+         catch (Exception $ex)
+         {
+             $msg=$ex->getMessage();
+             ?>
+            <script> window.location="../view/view-products.php?msg=<?php echo $msg; ?>"</script>
+           <?php
+     
+     
+     
+         }
+        
+        
+        
+        
      case "load_category":
          
          $cat_id=$_POST["cat_id"];
@@ -125,7 +165,7 @@ else
                         <?php
                         break;
                     
-    case "update_category":
+     case "update_category":     //update category
            
            $cat_name=$_POST["cat_name"];
            $cat_id=$_POST["cat_id"];
@@ -137,9 +177,9 @@ else
                      ?>
                         <script> window.location="../view/categories.php?msg=<?php echo $msg; ?>"</script>
                     <?php
-                 break;
+                 break;         //update category
              
-             case "load_brand":
+    case "load_brand":
            $brand_id=$_POST["brand_id"];
            
            $brandResult=$brandObj->getSpecificBrand($brand_id);
@@ -160,6 +200,58 @@ else
            <?php
            
            break;
+       
+       
+     case "view_product":
+           $product_id=$_POST["product_id"];
+           
+           $productResult= $productObj->getSpecificProduct($product_id);
+           $product_row=$productResult->fetch_assoc();
+           ?>
+                    <input type="hidden" name="product_id" value="<?php echo $product_row["product_id"]; ?>" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Name : <?php echo ucwords($product_row["product_name"]);  ?></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Brand : <?php echo ucwords($product_row["brand_name"]);  ?></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">&nbsp;</div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Category : <?php echo ucwords($product_row["cat_name"]);  ?></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Price : <?php echo ucwords($product_row["product_price"]);  ?></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Barcode : <?php echo ucwords($product_row["barcode_number"]);  ?></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">&nbsp;</div>
+                    </div>
+                    
+           <?php
+           break; //view product
        
      
        case "update_brand":
@@ -293,7 +385,7 @@ else
            <?php
            break;
        
-       case "add_stock":
+       case "add_stock1":
            
            $product_id=$_POST["product_id"];
            $stock_date=$_POST["stock_date"];

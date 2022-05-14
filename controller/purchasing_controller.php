@@ -1,5 +1,5 @@
 <?php
-include '../commons/session.php';
+include '../commons/sessions.php';
 include '../model/purchasing_model.php';
 include '../model/product_model.php';
 $purchaingObj = new Purchasing();
@@ -36,14 +36,14 @@ else
                         <div class="form-group">
                             <label class="control-label">Select Product</label>
                         <?php
-                            $productResult=$productObj->getAllProducts();
+                            $productResult=$productObj->getAllProducts();    // calling the function
                         ?>
                         <select class="form-control" id="prid">
                             <?php
                                 while($productrow=$productResult->fetch_assoc())
                                 {
                             ?>
-                            <option value="<?php echo $productrow["product_id"]  ?>"><?php echo ucwords($productrow["product_name"]);  ?> </option>
+                            <option value="<?php echo $productrow["product_id"]  ?>"><?php echo ucwords($productrow["product_name"]);  ?> </option>    <!-- products -->
                             <?php
                                 }
                             ?>
@@ -52,7 +52,7 @@ else
                     </div>
                     <div class="col-md-3">
                           <div class="form-group">
-                            <label class="control-label">Qty</label>
+                            <label class="control-label">Qty</label>   <!-- quantity -->
                         <input type="text" class="form-control" id="qty"/>
                           </div>
                     </div>

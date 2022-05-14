@@ -26,12 +26,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="../images/iconset/barcelona.png" width="100px" height="100px"/>
+                    <img src="../images/iconset/name.png" width="200px" height="100px"/> 
                 </div>
                 <div class="col-md-8">
-                    <h1 align="center">EL Grocery Management System</h1>
+                    <h1 align="center"> PM Automobile Management System </h1>
                 </div>
-                <div class="col-md-2">&nbsp;</div>
+                 <div class="col-md-2">&nbsp;</div>
             </div>
             <hr/>
             <div class="row">
@@ -68,10 +68,10 @@
                 <div class="col-md-9">
                     <div class="row">
                         <div class="col-md-3">
-                            <input type="date" id="reqdate" class="form-control" name="note_date"/>
+                            <input type="date" id="reqdate" class="form-control" name="note_date"/> <!-- to check the button click is working -->
                         </div>
                         <div class="col-md-3">
-                            <button id="addnotebtn" type="button" class="btn btn-primary">Add Note</button>
+                            <button id="addnotebtn" type="button" class="btn btn-primary">Add Note</button> <!-- to add a note -->
                         </div>
                        
                     </div>  

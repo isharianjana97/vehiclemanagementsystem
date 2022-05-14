@@ -37,6 +37,17 @@
              });
              
          }
+         
+         
+         viewProduct=function(productid) //load category
+     {
+         var url="../controller/product_controller.php?status=view_product";
+          $.post(url,{product_id:productid},function(data){
+              
+              $("#dynamicviewproduct").html(data);
+              
+          });
+     }
         
        
    </script>  
@@ -134,7 +145,7 @@
                             <tr>
                                  
                                 <td>&nbsp;</td>
-                                <td><?php echo ucwords($product_row["product_name"]); ?></td>
+                                <td><?php echo ucwords($product_row["product_name"]); ?></td> 
                                 <td><?php echo ucwords($product_row["brand_name"]);  ?></td>
                                 <td><?php echo ucwords($product_row["cat_name"]);  ?></td>
                                 <td><?php echo "Rs ".$product_row["product_price"]; ?></td>
@@ -147,19 +158,22 @@
                                               onclick="loadStock('<?php echo $product_id ?>');" >
                                             <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Stock
                                      </a>
-                                    <a href="view-user.php?user_id=<?php echo $product_id; ?>" class="btn btn-warning"><span class="glyphicon glyphicon-search"></span>&nbsp;View</a>
+                                     <a  href="#" class="btn btn-warning" data-toggle="modal" data-target="#viewProduct"
+                                              onclick="viewProduct('<?php echo $product_id ?>');" >
+                                            <span class="glyphicon glyphicon-plus"></span>&nbsp; View Product
+                                     </a> <!-- view product  -->
                                     
                                     <?php 
                                         if($product_row["product_status"]==1)
                                         {
                                            ?>
-                                    <a href="../controller/user_controller.php?status=deactivate&user_id=<?php echo $product_id ?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp; Deactivate</a> 
+                                    <a href="../controller/product_controller.php?status=deactivate&product_id=<?php echo $product_id ?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp; Deactivate</a> 
                                            <?php
                                         }
                                         else
                                         {
                                             ?>
-                                    <a href="../controller/user_controller.php?status=activate&user_id=<?php echo $product_id ?>" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>&nbsp; Activate</a> 
+                                    <a href="../controller/product_controller.php?status=activate&product_id=<?php echo $product_id ?>" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>&nbsp; Activate</a> 
                                             <?php
                                         }
                                     ?>
@@ -206,6 +220,71 @@
 
                 </div>
             </div>
+        
+                <!-- View product Modal -->
+  <div class="modal fade" id="viewProduct" role="dialog"> <!--to identify which modal should appear id -->
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+          <form action="../controller/product_controller.php?status=view_product" method="post"> <!-- update category  -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon"></span> &nbsp; View Product </h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                <div id="dynamicviewproduct">
+                    
+                </div> 
+                
+            </div>
+            
+        </div>
+       
+          </form>
+      </div>
+      
+    </div>
+  </div>
+                
+              <!-- Add stock Modal -->
+  <div class="modal fade" id="modalBrand" role="dialog"> <!--to identify which modal should appear id -->
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+          <form action="../controller/product_controller.php?status=add_brand" method="post">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><span class="glyphicon glyphicon-plus"></span> &nbsp; Add Brand</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <label> Brand Name </label>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="brand_name"/>
+                </div>
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save"> 
+                </span>&nbsp; Save</button>
+          &nbsp;
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+          </form>
+      </div>
+      
+    </div>
+  </div>
+              
+              
+              
+              
     </body>
     <!--   include jquery -->
 

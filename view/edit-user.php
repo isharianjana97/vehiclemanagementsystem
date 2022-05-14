@@ -74,20 +74,13 @@ $userrow=$userResult->fetch_assoc();
                     </div> 
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <ul class="list-group">
-                            <a href="add-user.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                Add Users
-                            </a>
-                            <a href="view-user.php" class="list-group-item">
-                                <span class="glyphicon glyphicon-search"></span>
-                                &nbsp;
-                                View Users
-                            </a>
-                        </ul>
-                    </div>
+                    
+
+                <div class="col-md-3">
+                    <?php
+                                        include_once '../includes/user-navigation.php';
+                    ?>
+                </div>
                     <div class="col-md-9">
                         <form action="../controller/user_controller.php?status=update_user " enctype="multipart/form-data" method="post">
                             

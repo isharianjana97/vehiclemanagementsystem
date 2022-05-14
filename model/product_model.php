@@ -59,7 +59,35 @@ class Product{
         $result=$conn->query($sql) or die($conn->error);
         return $result;
     }
+   public function getCategory1Count()
+    {
+        $conn= $GLOBALS["conn"];
+        //$sql="SELECT COUNT(cat_id) as category1Count FROM category c , product p  WHERE c.cat_id=p.cat_id AND cat_id='8' ";
+        $sql="SELECT COUNT(product_id) as category1Count FROM product WHERE cat_id='8'";
+        $result=$conn->query($sql) or die($conn->error);  
+        return $result;
+        
+    }
     
+    public function getCategory2Count()//not working
+    {
+        $conn= $GLOBALS["conn"];
+        //$sql="SELECT COUNT(cat_id) as category1Count FROM category c , product p  WHERE c.cat_id=p.cat_id AND cat_id='8' ";
+        $sql="SELECT COUNT(product_id) as category2Count FROM product WHERE cat_id='10'";
+        $result=$conn->query($sql) or die($conn->error);  
+        return $result;
+        
+    }  
+     public function getCategory3Count()//not working
+    {
+        $conn= $GLOBALS["conn"];
+        //$sql="SELECT COUNT(cat_id) as category1Count FROM category c , product p  WHERE c.cat_id=p.cat_id AND cat_id='8' ";
+        $sql="SELECT COUNT(product_id) as category3Count FROM product WHERE cat_id='7'";
+        $result=$conn->query($sql) or die($conn->error);  
+        return $result;
+        
+    }  
+
  
     
     
