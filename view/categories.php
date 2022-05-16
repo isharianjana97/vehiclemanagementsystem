@@ -12,8 +12,8 @@ include '../model/brand_model.php';
    $categoryObj = new Category();
    $brandObj = new Brand();
     
-   $categoryResult= $categoryObj->getAllCategories();
-   $brandResult = $brandObj->getAllBrands();
+   $categoryResult= $categoryObj->getAllCategories(); //get all categories
+   $brandResult = $brandObj->getAllBrands();  //get all brands
 
 ?>
 <html>
@@ -154,13 +154,13 @@ include '../model/brand_model.php';
                 <div class="row">
                     <div class="col-md-3">
                         <ul class="list-group">
-                          <?php include_once '../includes/main-product-navigation.php';?>
+                          <?php include_once '../includes/main-product-navigation.php';?> <!-- navigation  -->
                     </div>
                     <div class="col-md-9">
                         
                         
                             
-                            <div class="col-md-6">
+                            <div class="col-md-6"> <!-- category -->
                                 <div class="row"> <!-- add category button -->
                                 <div class="col-md-12">
                                      <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal"> <!-- to pop up modal -->
@@ -170,7 +170,7 @@ include '../model/brand_model.php';
                                 </div>
                             </div> <!-- add category button -->
                             <h4 align="center"> Categories </h4>
-                            <table class="table">
+                            <table class="table">  <!-- category list -->
                                 <thead>
                                     <tr>
                                         <th>Category Id</th>
@@ -190,10 +190,10 @@ include '../model/brand_model.php';
                                         <th><?php echo $cat_row["cat_id"]?></th>
                                         <th><?php echo ucwords($cat_row["cat_name"])?></th>
                                         <th>
-                                        <a  href="#" class="btn btn-warning" data-toggle="modal" data-target="#editCat"
-                                            onclick="loadCategory('<?php echo $cat_id ?>');"> <!-- pass catid to the function -->
+                                        <a  href="#" class="btn btn-warning" data-toggle="modal" data-target="#editCat" <!-- edit category  -->
+                                            onclick="loadCategory('<?php echo $cat_id ?>');"> <!-- pass catid to the function and load category -->
                                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit
-                                            </a>
+                                            </a> <!-- edit category  -->
                                         </th>
                                     </tr>
                                     <?php
@@ -202,8 +202,10 @@ include '../model/brand_model.php';
                                 </tbody>
                                 
                                 
-                            </table>
-                        </div>
+                            </table> <!-- category list -->
+                        </div> <!-- category -->
+                        
+                        
                         <div class="col-md-6">
                             <div class="row"> <!-- add brand button -->
                                 <div class="col-md-12">
@@ -259,7 +261,7 @@ include '../model/brand_model.php';
       <div class="modal-content">
           <form action="../controller/product_controller.php?status=add_category" method="post">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button type="button" class="close" data-dismiss="modal">&times;</button> 
           <h4 class="modal-title"><span class="glyphicon glyphicon-plus"></span> &nbsp; Add Category</h4>
         </div>
         <div class="modal-body">
@@ -291,7 +293,7 @@ include '../model/brand_model.php';
     
       <!-- Modal content-->
       <div class="modal-content">
-          <form action="../controller/product_controller.php?status=update_category" method="post">
+          <form action="../controller/product_controller.php?status=update_category" method="post"> <!-- update category  -->
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title"><span class="glyphicon glyphicon-plus"></span> &nbsp; Add Category</h4>

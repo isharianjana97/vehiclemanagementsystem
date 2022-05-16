@@ -12,7 +12,7 @@ $moduleArray= $_SESSION["user_module"];
     </head>
     <body>
         <div class="container">
-            <div class="row">
+            <div class="row"> <!-- headings -->
                 <div class="col-md-2">
                     <img src="../images/iconset/name.png" width="200px" height="100px"/> 
                 </div>
@@ -20,9 +20,9 @@ $moduleArray= $_SESSION["user_module"];
                     <h1 align="center"> PM Automobile Management System </h1>
                 </div>
                  <div class="col-md-2">&nbsp;</div>
-            </div>
+            </div>           <!-- headings -->
                 <hr/>
-                    <div class="row">
+                    <div class="row"> <!-- Administration panel -->
                     <div class="col-md-2"><span class="glyphicon glyphicon-user"></span>
                     
                     &nbsp;
@@ -38,21 +38,24 @@ $moduleArray= $_SESSION["user_module"];
                         &nbsp;
                         <button class="btn btn-primary"> Logout</button>
                     </div>
-                    </div>
+                    </div> <!-- Administration panel -->
+                    
                 <hr/>
-                <div class="row">
+                <div class="row"> <!-- Dashboard -->
                     <div class="col-md-12">
                         <ul class="breadcrumb">
                             <li> Dashboard</li>
                         </ul>
                     </div> 
-                </div>
+                </div> <!-- Dashboard -->
+                
                 <div class="row">
                     <?php 
-                                        foreach ($moduleArray as $mod) {
+                    foreach ($moduleArray as $mod) {
                                             
-                                        ?>
+                     ?>
                     <a href="<?php echo $mod["module_url"];?>">
+                        
                     <div class="col-md-3">
                         <div class="panel" style="height: 200px;background-color: #e8aa90">
                             <h4>

@@ -16,7 +16,8 @@ $roleResult=$userObj->getUserRoles();
     </head>
     <body>
         <div class="container">
-            <div class="row">
+            
+            <div class="row"> <!-- Dashboard -->
                 <div class="col-md-2">
                     <img src="../images/iconset/name.png" width="200px" height="100px"/> 
                 </div>
@@ -25,6 +26,7 @@ $roleResult=$userObj->getUserRoles();
                 </div>
                  <div class="col-md-2">&nbsp;</div>
             </div>
+            
                 <hr/>
                     <div class="row">
                     <div class="col-md-2"><span class="glyphicon glyphicon-user"></span>
@@ -50,7 +52,7 @@ $roleResult=$userObj->getUserRoles();
                             <li> Dashboard</li>
                         </ul>
                     </div> 
-                </div>
+                </div> <!-- Dashboard -->
                 <div class="row">
                     
                 <div class="col-md-3">
@@ -60,7 +62,7 @@ $roleResult=$userObj->getUserRoles();
                 </div>
 
                     <div class="col-md-9">
-                        <form action="../controller/user_controller.php?status=add_user " enctype="multipart/form-data" method="post">
+                        <form action="../controller/user_controller.php?status=add_user " enctype="multipart/form-data" method="post"> <!-- for file uploads -->
                             
                             
                             
@@ -100,7 +102,7 @@ $roleResult=$userObj->getUserRoles();
                                 <label class="control-label"> First Name </label>
                             </div>
                             <div class="col-md-4">
-                                <input type="text" name="fname" id="fname" class="form-control"/>
+                                <input type="text" name="fname" id="fname" class="form-control"/>  <!--   name=name that is use to when the value is passed and the id is used to uniquly identify -->
                             </div>
                             
                             <div class="col-md-2">
@@ -260,7 +262,7 @@ $roleResult=$userObj->getUserRoles();
                 if(input.files  && input.files[0])
                 {
                     var reader = new FileReader();   <!--   open file reader -->
-                    reader.onload= function(e)       <!--   onload - uploaded file -->
+                    reader.onload= function(e)       <!--   onload - uploaded file --> <!-- read  dataurl is used to read contents from specific files -->
                     {
                         $("#imgprev")
                                 .attr('src',e.target.result) 

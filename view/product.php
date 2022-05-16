@@ -85,7 +85,7 @@ $moduleArray= $_SESSION["user_module"];
                                 </h2>
                                 <h1 align="center">
                                       <?php
-                                    echo $category2row["category2Count"];  // to show the Category 1 products
+                                    echo $category2row["category2Count"];  // to show the Category 2 products
                                 ?>
                                 </h1>
                             </div> 
@@ -97,7 +97,7 @@ $moduleArray= $_SESSION["user_module"];
                                 </h2>
                                 <h1 align="center">
                                       <?php
-                                    echo $category3row["category3Count"];  // to show the Category 1 products
+                                    echo $category3row["category3Count"];  // to show the Category 3 products
                                 ?>
                                 </h1>
                             </div> 
