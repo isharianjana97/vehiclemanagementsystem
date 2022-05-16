@@ -1,6 +1,6 @@
 <?php
 
-include_once '../commons/dbconnection.php';
+include_once '../commons/dbConnection.php';
 $dbconnection= new dbConnection();
 
 class Product{
@@ -41,13 +41,12 @@ class Product{
         return $conn->insert_id;
     }
 
-  
-     
-    public function getAllProducts()
+    public function getUserTimeTablesFunction()
     {
-        $conn= $GLOBALS["conn"];
-        $sql="SELECT * FROM product p, category c, brand b,unit u WHERE p.cat_id=c.cat_id  AND p.brand_id=b.brand_id AND p.unit_id=u.unit_id";
-        $result=$conn->query($sql) or die($conn->error);
+        $conn = $GLOBALS["conn"];
+        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT 15,5) sub ORDER BY id ASC";
+        
+        $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
     

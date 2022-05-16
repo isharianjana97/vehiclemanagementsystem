@@ -73,8 +73,10 @@ protected $PDFVersion;         // PDF version number
 
 function __construct($orientation='P', $unit='mm', $size='A4')
 {
+
 	// Some checks
-	$this->_dochecks();
+	// $this->_dochecks();
+	// echo "sdsdsd";
 	// Initialization of properties
 	$this->state = 0;
 	$this->page = 0;
@@ -989,14 +991,19 @@ function Output($dest='', $name='', $isUTF8=false)
 		$name = $tmp;
 	}
 	if($dest=='')
-		$dest = 'I';
+	$dest = 'I';
 	if($name=='')
-		$name = 'doc.pdf';
+	$name = 'doc.pdf';
 	switch(strtoupper($dest))
 	{
 		case 'I':
 			// Send to standard output
-			$this->_checkoutput();
+			try{
+
+				$this->_checkoutput();
+			}catch(exception $ex){
+				echo $ex;
+			}
 			if(PHP_SAPI!='cli')
 			{
 				// We send to a browser
