@@ -10,9 +10,16 @@ $productObj = new Product();
 $stockObj = new Stock();
 
 
-$productResult= $productObj->getAllProducts();
+$productResult= $productObj->getUserTimeTablesFunction();
 
-$fpdf= new FPDF();
+try{
+
+    $fpdf= new FPDF('P','mm','A4');
+    
+
+}catch( exception $ex ){
+
+}
 $fpdf->SetTitle("Stock Repot");  ///  set the title for the Document
 
 $fpdf->AddPage("P", "A4",0);
@@ -40,14 +47,14 @@ while($productrow=$productResult->fetch_assoc())
 {
     $product_id=$productrow["product_id"];
     
-     $tot_qty=  $stockObj->getProductStock($product_id);
+    $tot_qty=  $stockObj->getProductStock($product_id);
     
-// table body
-$fpdf->Cell(30,10,$productrow["product_name"],1,0,"C");
-$fpdf->Cell(30,10,$productrow["brand_name"],1,0,"C");
-$fpdf->Cell(30,10,$productrow["cat_name"],1,0,"C");
-$fpdf->Cell(30,10,"Rs ".$productrow["product_price"],1,0,"R");
-$fpdf->Cell(50,10,$tot_qty." ".$productrow["unit_name"],1,1,"R");
+    // table body
+    $fpdf->Cell(30,10,$productrow["id"],1,0,"C");
+    $fpdf->Cell(30,10,$productrow["brand_name"],1,0,"C");
+    $fpdf->Cell(30,10,$productrow["cat_name"],1,0,"C");
+    $fpdf->Cell(30,10,"Rs ".$productrow["product_price"],1,0,"R");
+    $fpdf->Cell(50,10,$tot_qty." ".$productrow["unit_name"],1,1,"R");
 }
 ///  report body, report ,notes   (sequence and state transition diagrams)
 
@@ -58,10 +65,11 @@ $date=date("Y-m-d H:i:s");
 $fpdf->Cell(200,10,"Generated on: $date",0,1,"L");
 
 
-if(!isset($_REQUEST["status"]))
+
+if($_REQUEST["status"] == 'save')
 {
 
-    $fpdf->Output();  //  display the pdf on the browser
+    $fpdf->Output('I',"docf.pdf");  //  display the pdf on the browser
 }
 else{
     $d1="User_report_".$date;

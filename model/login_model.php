@@ -1,6 +1,7 @@
 <?php
 //  include the connection
-include_once '../commons/dbconnection.php';
+echo "bbbbbbbbbbbbbbb";
+include_once '../commons/dbConnection.php';
 $dbconnection= new dbConnection();
 
 class Login

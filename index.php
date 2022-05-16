@@ -12,5 +12,5 @@ else{
 $hostname=$_SERVER["HTTP_HOST"];  // url get as the host name //facebook.com
 $url=$url.$hostname;   //apend current url to the host name
 ?>
-<script>window.location="<?php echo $url."/bit_vehicle_manage/view/login.php"  ?>"</script>  <!-- send user to the login.php  -->
+<script>window.location="<?php echo $url."/vehiclemanagementsystem/view/login.php"  ?>"</script>  send user to the login.php 
 
