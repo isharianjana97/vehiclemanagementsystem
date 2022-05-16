@@ -20,13 +20,13 @@
             <div class="row" style="height: 200px">
                 
                 <div class="col-md-4 col-md-offset-7">
-                    <div id="alertdiv"></div>
+                    <div id="alertdiv"></div>    <!-- to display the alert message -->
                 </div>
             </div>
           
                 <div class="row">
                 <div class="col-md-6">
-                <img src="../images/w.jpeg" class="img-responsive" alt="Responsive image"  height="100px">
+                <img src="../images/w.jpeg" class="img-responsive" alt="Responsive image"  height="100px"> <!-- to display image, alt attribute specifies an alternate text for an image, if the image cannot be displayed-->
                 </div>
                 <div class="col-md-1" >
                    &nbsp;
@@ -41,7 +41,7 @@
                      
 
                      
-                        <div class="panel panel-default" style="height: 4 00px">
+                        <div class="panel panel-default" style="height: 4 00px"> <!-- to display the panel -->
             <?php
             
             if(isset($_GET["msg"]))
@@ -99,11 +99,12 @@
                                 <div class="row">
                           <div class="col-md-12"> 
                               
-                               <div class="row">
+                                <div class="row">
                                     <div class="col-md-12">&nbsp;</div>
-                                </div>                 
+                                </div>                  
 
-                          </div>                </div>
+                          </div>  
+                                </div>
                                 
                                   
                                 <div class="row">
