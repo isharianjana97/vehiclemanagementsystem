@@ -13,10 +13,10 @@ $return_msg = $_GET["msg"];
 $paginationNumber = $_GET["pagination_number"];
 if ($paginationNumber == ""){
     $paginationNumber = 0;
-    $timesResult = $userObj->getUserTimeTablesFunction($user_id);
+    $timesResult = $userObj->getUserSalariesFunctionAll($user_id);
 }else{
     $paginationNumber = (int)$paginationNumber;
-    $timesResult = $userObj->getUserTimeTablesPaginationFunction($paginationNumber);
+    $timesResult = $userObj->getUserSalariesPaginationFunction($paginationNumber);
 }
 
 $user_id = base64_decode($user_id);
@@ -54,7 +54,7 @@ echo $paginationNumber;
         }
 
         th {
-            background: #f5f;
+            background: #55f;
         }
     </style>
 
@@ -106,11 +106,15 @@ echo $paginationNumber;
                 <ul class="list-group">
                     <?php include_once '../includes/hr-navigation.php'; ?>
                     <div class="col-md-4">    
-                            <a href="./generated_attendance_report.php?status=save" class="btn btn-success">
+                            <a href="./generated_salary_report.php?status=save" class="btn btn-success">
                                 <span class="glyphicon glyphicon-floppy-save"></span> &nbsp;
-                                Save Attendance Report
+                                Save Salary Report
                             </a>
                         </div> 
+                    
+                    <div>
+                        <?php include_once '../includes/Simplecalculator.php'; ?>
+                    </div>
             </div>
             <div class="col-md-9">
                 <div class="tableFixHead">
@@ -122,8 +126,8 @@ echo $paginationNumber;
                                 <th> &nbsp; </th>
                                 <th> User Id </th>
                                 <th> User Name </th>
-                                <th> Arrived at </th>
-                                <th> Left at</th>
+                                <th> paid on </th>
+                                <th> Amount paid </th>
                                 <th> &nbsp; </th>
                             </tr>
                         </thead>
@@ -149,17 +153,8 @@ echo $paginationNumber;
                                     </td>
                                     <td><?php echo $user_row["user_id"];  ?></td>
                                     <td><?php echo ucwords($user_row["user_fname"] . " " . $user_row["user_lname"]) ?></td>
-                                    <td class="arrival-time"><?php echo $user_row["arrival_time"];  ?></td>
-                                    <td class="off-time">
-                                        <?php
-                                        if ($user_row["off_time"] == "") {
-                                        ?>
-                                            <a href="../controller/user_controller.php?status=leave&user_id=<?php echo $user_id ?>&recode_id=<?php echo $recode_id ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>&nbsp; Leave Now</a>
-                                        <?php
-                                        } else {
-                                            echo $user_row["off_time"];
-                                        }
-                                        ?>
+                                    <td class="arrival-time"><?php echo $user_row["payDate"];  ?></td>
+                                    <td class="off-time"> <?php echo $user_row["amount"] ?>
                                     </td>
 
                                 </tr>
@@ -184,19 +179,22 @@ echo $paginationNumber;
 
                             <nav aria-label="Page float-right navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber-1 ?>">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber+1 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+1 ?>"><?php echo $paginationNumber+2 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+2 ?>"><?php echo $paginationNumber+3 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+3 ?>">Next</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/salaries.php?pagination_number=<?php echo $paginationNumber-1 ?>">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/salaries.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber+1 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/salaries.php?pagination_number=<?php echo $paginationNumber+1 ?>"><?php echo $paginationNumber+2 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/salaries.php?pagination_number=<?php echo $paginationNumber+2 ?>"><?php echo $paginationNumber+3 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/salaries.php?pagination_number=<?php echo $paginationNumber+3 ?>">Next</a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
-                    <form class="row" action="../controller/user_controller.php?status=arrive&pagination_number=<?php echo $paginationNumber ?>" method="post" style="margin-left:0; padding-top:8px; padding-right:0;">
+                    <form class="row" action="../controller/user_controller.php?status=payment&pagination_number=<?php echo $paginationNumber ?>" method="post" style="margin-left:0; padding-top:8px; padding-right:0;">
                         <div class="row">
                             <div class="col-md-2">
                                 <input type="text" name="userId" id="userId" class="form-control" placeholder="userId" />
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" name="amount" id="amount" class="form-control" placeholder="Amount in LKR" />
                             </div>
                             <div class="col-md-3">
                                 <input type="date" name="arrivalDate" id="arrivalDate" class="form-control" placeholder="Arrival Date" />
@@ -210,12 +208,14 @@ echo $paginationNumber;
                         </div>
                         <div class="row" style="margin-top: 10px">
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-success">Arrived now</button>
+                                <button type="submit" class="btn btn-success">pay now</button>
                             </div>
                         </div>
 
 
                     </form>
+
+                    
 
                 </div>
             </div>

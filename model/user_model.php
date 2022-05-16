@@ -182,8 +182,16 @@ class User
     public function getUserTimeTablesFunctionAll()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY userId) sub ORDER BY id ASC";
+        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY userId) sub ORDER BY id DESC";
         
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
+
+    public function getUserSalariesFunctionAll()
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_salary, user WHERE user_salary.userId = user.user_id ) sub ORDER BY id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -191,7 +199,7 @@ class User
     public function getUserTimeTablesFunction()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT 15,5) sub ORDER BY id ASC";
+        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT 15,5) sub ORDER BY id DESC";
         
         $result = $conn->query($sql) or die($conn->error);
         return $result;
@@ -200,7 +208,7 @@ class User
     public function getUserTimeTablesFunctionSpecificUser($userId, $givenTime)
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id AND user_time_table.arrival_time > '$givenTime' AND user_time_table.userId = '$userId') sub ORDER BY id ASC";
+        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id AND user_time_table.arrival_time > '$givenTime' AND user_time_table.userId = '$userId') sub ORDER BY id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -210,7 +218,16 @@ class User
     {
         $conn = $GLOBALS["conn"];
         $startAt = 5 * $paginationNumber;
-        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT $startAt,5) sub ORDER BY id ASC";
+        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT $startAt,5) sub ORDER BY id DESC";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
+
+    public function getUserSalariesPaginationFunction($paginationNumber)
+    {
+        $conn = $GLOBALS["conn"];
+        $startAt = 5 * $paginationNumber;
+        $sql = "SELECT * FROM (SELECT * FROM user_salary, user WHERE user_salary.userId = user.user_id ORDER BY id DESC LIMIT $startAt,5) sub ORDER BY id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -220,6 +237,14 @@ class User
     {
         $conn = $GLOBALS["conn"];
         $sql = "INSERT INTO user_time_table (userId,arrival_time) VALUES('$user_id','$arrivalDate $arrivalTime')";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
+
+    public function setPaidUser($user_id,$amount, $arrivalDate, $arrivalTime)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "INSERT INTO user_salary (userId,payDate,amount) VALUES('$user_id','$arrivalDate $arrivalTime',$amount)";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }

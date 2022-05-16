@@ -356,8 +356,8 @@ if (!isset($_GET["status"])) {
             <script>
                 window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
             </script>
-            <?php
-                break;
+        <?php
+            break;
 
         case "arrive":
             $user_id = $_POST["userId"];
@@ -366,16 +366,34 @@ if (!isset($_GET["status"])) {
             $paginationNumber = $_GET["pagination_number"];
 
 
-            echo $user_id , " ", $arrivalDate , $arrivalTime; 
+            echo $user_id, " ", $arrivalDate, $arrivalTime;
 
             $userObj->setArrivedUser($user_id, $arrivalDate, $arrivalTime);
             $msg = "User Data Recoded";
-            ?>
+        ?>
             <script>
                 window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
             </script>
-            <?php
-                break;
-            
+        <?php
+            break;
+
+        case "payment":
+            $user_id = $_POST["userId"];
+            $amount = $_POST["amount"];
+            $arrivalDate = $_POST["arrivalDate"];
+            $arrivalTime = $_POST["arrivalTime"];
+            $paginationNumber = $_GET["pagination_number"];
+
+
+            echo $user_id, " ", $arrivalDate, $arrivalTime;
+
+            $userObj->setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime);
+            $msg = "User Salary Data Recoded";
+        ?>
+            <script>
+                window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+            </script>
+        <?php
+            break;
     }
 }
