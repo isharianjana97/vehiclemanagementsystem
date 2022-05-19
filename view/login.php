@@ -32,9 +32,6 @@
                    &nbsp;
                 </div>
                     
-                    
-                    
-                    
                  <div class="col-md-4">
                                        
                  <form action="../controller/login_controller.php?status=login" method="POST">
