@@ -1,5 +1,5 @@
 <ul class="list-group">
-    <a href="../view/addnewdeal.php" class="list-group-item">
+    <a href="../view/addnewdeal.php?pagination_number=0&msg=&user_id=0" class="list-group-item">
         <span class="glyphicon glyphicon-plus"></span>
         &nbsp;
         Add new Deal
