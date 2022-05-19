@@ -4,16 +4,94 @@ include_once '../commons/dbConnection.php';
 $dbconnection = new dbConnection();
 
 
-class User
+class Vehicle
 {
 
-    public function getUserModules($user_id)
+    public function addNewDeal($vid, $vname, $customername, $arrivalDate, $arrivalTime, $deliverydate, $deliverytime, $charge, $issue, $photo)
     {
+        echo $vid. "<br>". $vname. "<br>". $customername. "<br>". $arrivalDate. "<br>". $arrivalTime. "<br>". $deliverydate. "<br>". $deliverytime. "<br>". $charge. "<br>". $issue. "<br>". $photo;
+
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM user u, module_role r, module m "
-            . "WHERE u.user_role=r.role_id AND r.module_id=m.module_id AND u.user_id='$user_id' AND m.module_status='1'";
+        try {
+            $sql = "INSERT INTO vehicle_management_db.vehicle_service
+            (
+            vehicle_id,
+            vehicle_name,
+            vehicle_issue,
+            customer_name,
+            arrived_on,
+            delivered_on,
+            task_charge,
+            vehicle_image)
+            VALUES
+            (
+                '$vid', 
+                '$vname', 
+                '$issue',
+                '$customername', 
+                '$arrivalDate $arrivalTime', 
+                '$deliverydate $deliverytime', 
+                '$charge', 
+                '$photo'
+            )";
+        } catch (Exception $e) {
+
+            echo $e;
+        }
+
         $result = $conn->query($sql);
         return $result;
+    }
+
+    public function modifyDeal($vid, $vname, $customername, $arrivalDate, $arrivalTime, $deliverydate, $deliverytime, $charge, $issue, $photo, $recode_id)
+    {
+        echo $vid. "<br>". $vname. "<br>". $customername. "<br>". $arrivalDate. "<br>". $arrivalTime. "<br>". $deliverydate. "<br>". $deliverytime. "<br>". $charge. "<br>". $issue. "<br>". $photo. "<br>". $recode_id. "<br>";
+
+        $conn = $GLOBALS["conn"];
+        try {
+            // $sql = "INSERT INTO vehicle_management_db.vehicle_service
+            // (
+            // vehicle_id,
+            // vehicle_name,
+            // vehicle_issue,
+            // customer_name,
+            // arrived_on,
+            // delivered_on,
+            // task_charge,
+            // vehicle_image)
+            // VALUES
+            // (
+            //     '$vid', 
+            //     '$vname', 
+            //     '$issue',
+            //     '$customername', 
+            //     '$arrivalDate $arrivalTime', 
+            //     '$deliverydate $deliverytime', 
+            //     '$charge', 
+            //     '$photo'
+            // )";
+
+            $sql = "UPDATE vehicle_management_db.vehicle_service 
+                    SET 
+                        vehicle_id = '$vid',
+                        vehicle_name = '$vname',
+                        vehicle_issue = '$issue',
+                        customer_name = '$customername',
+                        arrived_on = '$arrivalDate $arrivalTime',
+                        delivered_on = '$deliverydate $deliverytime',
+                        task_charge = '$charge', 
+                        vehicle_image = '$photo'
+                    WHERE
+                        id = '$recode_id'";
+
+
+        } catch (Exception $e) {
+
+            echo $e;
+        }
+
+        $result = $conn->query($sql);
+        // return $result;
     }
 
     public function getUserById($user_id)
@@ -23,7 +101,7 @@ class User
         $result = $conn->query($sql);
         return $result;
     }
-    public function getUserRoles()//
+    public function getUserRoles() //
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM role";
@@ -162,13 +240,22 @@ class User
         $result = $conn->query($sql) or die($conn->error) or die($conn->error);
     }
 
-    public function removeUserFunctions($user_id)
+    public function removeVehicleRecodeFunctions($vehicle_id)
     {
         $conn = $GLOBALS["conn"];
-        $sql = "DELETE FROM user_function WHERE user_id='$user_id'";
+        $sql = "DELETE FROM vehicle_service WHERE id='$vehicle_id'";
         $result = $conn->query($sql) or die($conn->error);
+        return $result;
     }
 
+
+    public function finishDealOfAVehicle($vehicle_id,$field_name,$data)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "UPDATE vehicle_service SET $field_name='$data' where id = '$vehicle_id'";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
 
 
     public function getUserAssignedFunctions($user_id)
@@ -183,7 +270,7 @@ class User
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY userId) sub ORDER BY id DESC";
-        
+
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -196,10 +283,10 @@ class User
         return $result;
     }
 
-    public function getUserTimeTablesFunction()
+    public function getVehicleAllFunction()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT 15,5) sub ORDER BY id DESC";
+        $sql = "SELECT * FROM vehicle_service ORDER BY id DESC LIMIT 15,5";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -213,11 +300,11 @@ class User
     }
 
 
-    public function getUserTimeTablesPaginationFunction($paginationNumber)
+    public function getVehiclePaginationFunction($paginationNumber)
     {
         $conn = $GLOBALS["conn"];
         $startAt = 5 * $paginationNumber;
-        $sql = "SELECT * FROM (SELECT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id ORDER BY id DESC LIMIT $startAt,5) sub ORDER BY id DESC";
+        $sql = "SELECT * FROM vehicle_service ORDER BY id DESC LIMIT $startAt,5";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -240,7 +327,7 @@ class User
         return $result;
     }
 
-    public function setPaidUser($user_id,$amount, $arrivalDate, $arrivalTime)
+    public function setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime)
     {
         $conn = $GLOBALS["conn"];
         $sql = "INSERT INTO user_salary (userId,payDate,amount) VALUES('$user_id','$arrivalDate $arrivalTime',$amount)";

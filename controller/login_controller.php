@@ -10,7 +10,6 @@ if (!isset($_GET["status"])) {
     </script>
     <?php
 } else {
-    echo "ffffffff";
     include  '../model/login_model.php';
     include '../model/user_model.php';
     $loginObj = new Login();

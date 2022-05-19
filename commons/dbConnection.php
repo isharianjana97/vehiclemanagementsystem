@@ -15,11 +15,9 @@ class dbConnection
 
         try {
             $this->conn = new mysqli($this->dbhostname, $this->dbusername,$this->dbpassword,$this->dbname);
-            echo "Connection Successful";
 
             ///  checking if the db connection is succesful
             if (!$this->conn->connect_error) {
-                echo "Connection Successful";
                 $GLOBALS["conn"] =  $this->conn;
             } else {
                 echo "Connection Error";
