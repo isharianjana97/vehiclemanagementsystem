@@ -96,7 +96,7 @@ if (!isset($_GET["status"])) {
             $msg = "success";
     ?>
             <script>
-                window.location = "../view/addnewdeal.php?msg=<?php echo $msg; ?>";
+                window.location = "../view/addnewdeal.php?pagination_number=0&user_id=0&msg=<?php echo $msg; ?>";
             </script>
         <?php
 
@@ -186,7 +186,7 @@ if (!isset($_GET["status"])) {
             $msg = "success";
         ?>
             <script>
-                window.location = "../view/serviceschedule.php?msg=<?php echo $msg; ?>&pagination_number=0";
+                window.location = "../view/serviceschedule.php?user_id=0msg=<?php echo $msg; ?>&pagination_number=0";
             </script>
         <?php
 
@@ -205,7 +205,7 @@ if (!isset($_GET["status"])) {
             $msg = "succssfully updated";
         ?>
             <script>
-                window.location = "../view/serviceschedule.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>";
+                window.location = "../view/serviceschedule.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>user_id=0";
             </script>
         <?php
 
@@ -222,7 +222,7 @@ if (!isset($_GET["status"])) {
             $msg = "succssfully deleted";
         ?>
             <script>
-                window.location = "../view/serviceschedule.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>";
+                window.location = "../view/serviceschedule.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>&user_id=0";
             </script>
 <?php
 
