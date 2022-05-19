@@ -243,7 +243,7 @@ echo $paginationNumber;
         var date = new Date();
 
         var day = date.getDate(),
-            month = date.getMonth() + 1,
+            month = date.getMonth(),
             year = date.getFullYear(),
             hour = date.getHours(),
             min = date.getMinutes();
@@ -256,12 +256,12 @@ echo $paginationNumber;
         var today = year + "-" + month + "-" + day,
             displayTime = hour + ":" + min;
 
-        document.getElementById('arrivalDate').valueAsDate = new Date();
+        document.getElementById('arrivalDate').valueAsDate = new Date(); 
         document.getElementById('arrivalTime').value = displayTime;
     }
 
-    let timeText = $( ".arrival-time" );
-    console.log(timeText[0])
+    let timeText = $( ".arrival-time" );//
+    console.log("yyyyyyyyyyyyyyyyyyyyyyyy")
     for (let i=0;i<timeText.length;i++){
         let ele = timeText[i];
         let timeTextcurr = ele.innerText.trim();

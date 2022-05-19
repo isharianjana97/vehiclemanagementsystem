@@ -4,9 +4,9 @@ class dbConnection
 {
 
     public $conn;
-    private $dbhostname = "127.0.0.1";
+    private $dbhostname = "localhost";
     private $dbusername = "root";
-    private $dbpassword = "Shehan@53645";
+    private $dbpassword = "";
     private $dbname ="vehicle_management_db";
 
 
