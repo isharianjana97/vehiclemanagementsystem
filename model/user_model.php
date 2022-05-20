@@ -23,7 +23,7 @@ class User
         $result = $conn->query($sql);
         return $result;
     }
-    public function getUserRoles()//
+    public function getUserRoles()
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM role";
@@ -181,9 +181,9 @@ class User
 
     public function getUserTimeTablesFunctionAll()
     {
-        $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY userId) sub ORDER BY id DESC";
         
+        $conn = $GLOBALS["conn"];
+        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY user_time_table.userId) sub ORDER BY id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }

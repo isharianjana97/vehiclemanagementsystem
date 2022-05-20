@@ -27,6 +27,8 @@ if (!isset($_GET["status"])) {
 
             $role_id = $_POST["role_id"];
 
+
+
             $moduleResult = $userObj->getModulesByRole($role_id);
 
             while ($module_row = $moduleResult->fetch_assoc()) {
@@ -356,7 +358,7 @@ if (!isset($_GET["status"])) {
             <script>
                 window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
             </script>
-        <?php
+            <?php
             break;
 
         case "arrive":
@@ -366,34 +368,140 @@ if (!isset($_GET["status"])) {
             $paginationNumber = $_GET["pagination_number"];
 
 
-            echo $user_id, " ", $arrivalDate, $arrivalTime;
+            try {
+                if ($user_id == "") {
+                    throw new Exception("User Id can not be Empty!!!");
+                }
 
-            $userObj->setArrivedUser($user_id, $arrivalDate, $arrivalTime);
+                if ($arrivalDate == "") {
+                    throw new Exception("arrival date is Empty!!!");
+                }
+                if ($arrivalTime == "") {
+                    throw new Exception("arrival time is Empty!!!");
+                }
+
+                ///  regular Expression validation
+                $date = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+                $numberOnly = "/^[1-9]\d*$/";
+                $timeOnly = "/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/";
+
+                if (!preg_match($date, $arrivalDate)) {
+                    throw new Exception("Invalid arrival date Format");
+                }
+
+                if (!preg_match($timeOnly, $arrivalTime)) {
+                    throw new Exception("Invalid arrival time Format");
+                }
+
+                if (!preg_match($numberOnly, $user_id)) {
+                    throw new Exception("User Id is Invalid!!!");
+                }
+            } catch (Exception $ex) {
+                $msg = $ex->getMessage();
+                echo $arrivalTime;
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+                break;
+            }
+
+            try {
+                $userObj->setArrivedUser($user_id, $arrivalDate, $arrivalTime);
+            } catch (Exception $ex) {
+                $msg = "User doesn't exist";
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/hr.php?&msg=<?php echo $msg; ?>pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+            }
+
             $msg = "User Data Recoded";
-        ?>
+            $msg =  base64_encode($msg);
+            ?>
             <script>
-                window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/hr.php?&pagination_number=<?php echo $paginationNumber; ?>"
             </script>
-        <?php
+            <?php
             break;
 
         case "payment":
-            $user_id = $_POST["userId"];
-            $amount = $_POST["amount"];
-            $arrivalDate = $_POST["arrivalDate"];
-            $arrivalTime = $_POST["arrivalTime"];
-            $paginationNumber = $_GET["pagination_number"];
+            $user_id = trim($_POST["userId"]);
+            $amount = trim($_POST["amount"]);
+            $arrivalDate = trim($_POST["arrivalDate"]);
+            $arrivalTime = trim($_POST["arrivalTime"]);
+            $paginationNumber = trim($_GET["pagination_number"]);
 
+            try {
+                if ($user_id == "") {
+                    throw new Exception("User Id can not be Empty!!!");
+                }
 
-            echo $user_id, " ", $arrivalDate, $arrivalTime;
+                if ($amount == "") {
+                    throw new Exception("Amount can not be Empty!!!");
+                }
 
-            $userObj->setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime);
+                if ($arrivalDate == "") {
+                    throw new Exception("arrival date is Empty!!!");
+                }
+                if ($arrivalTime == "") {
+                    throw new Exception("arrival time is Empty!!!");
+                }
+
+                ///  regular Expression validation
+                $date = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+                $numberOnly = "/^[1-9]\d*$/";
+                $timeOnly = "/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/";
+
+                if (!preg_match($date, $arrivalDate)) {
+                    throw new Exception("Invalid arrival date Format");
+                }
+
+                if (!preg_match($numberOnly, $amount)) {
+                    throw new Exception("Invalid amount Format");
+                }
+
+                if (!preg_match($timeOnly, $arrivalTime)) {
+                    throw new Exception("Invalid arrival time Format");
+                }
+
+                if (!preg_match($numberOnly, $user_id)) {
+                    throw new Exception("User id is Invalid!!!");
+                }
+            } catch (Exception $ex) {
+                $msg = $ex->getMessage();
+                echo $arrivalTime;
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+                break;
+            }
+
+            try {
+                $userObj->setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime);
+            } catch (Exception $ex) {
+                $msg = "User Doesn't exist";
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+            }
             $msg = "User Salary Data Recoded";
-        ?>
+
+            ?>
             <script>
                 window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
             </script>
-        <?php
+<?php
             break;
     }
 }

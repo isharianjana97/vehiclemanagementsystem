@@ -88,7 +88,13 @@ class Product{
     }  
 
  
-    
+        public function getAllProducts()
+    {
+        $conn= $GLOBALS["conn"];
+        $sql="SELECT * FROM product p, category c, brand b,unit u WHERE p.cat_id=c.cat_id  AND p.brand_id=b.brand_id AND p.unit_id=u.unit_id";
+        $result=$conn->query($sql) or die($conn->error);
+        return $result;
+    }
     
     
 }

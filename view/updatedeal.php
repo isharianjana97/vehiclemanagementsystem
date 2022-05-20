@@ -21,7 +21,7 @@ $delivered_on = $_GET["delivered_on"];
 $delivered_on = substr($delivered_on,0,11);
 $task_charge = $_GET["task_charge"];
 
-echo date('H-i-s',strtotime($arrived_on)). "<br>". $imageloc. "<br>". $vehicle_id. "<br>". $vehicle_issue. "<br>". $
+// echo date('H-i-s',strtotime($arrived_on)). "<br>". $imageloc. "<br>". $vehicle_id. "<br>". $vehicle_issue. "<br>". $
 
 
 $paginationNumber = $_GET["pagination_number"];
@@ -35,7 +35,7 @@ if ($paginationNumber == "") {
 
 $vehicle_id = base64_decode($vehicle_id);
 
-echo $paginationNumber;
+// echo $paginationNumber;
 
 
 ?>
@@ -132,9 +132,7 @@ echo $paginationNumber;
 </head>
 
 <body>
-    <?php
-    echo $return_msg;
-    ?>
+
     <div class="container">
         <div class="row">
             <div class="col-md-2">

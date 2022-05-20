@@ -9,6 +9,14 @@ $vehicleObj = new Vehicle();
 
 $vehicle_id = $_GET["user_id"];
 $return_msg = $_GET["msg"];
+if(isset($_GET["msg"])){
+    $return_msg = $_GET["msg"];
+}else{
+    $return_msg = "";
+}
+if ($return_msg != "") {
+    $return_msg = base64_decode($return_msg);
+}
 
 $paginationNumber = $_GET["pagination_number"];
 if ($paginationNumber == "") {
@@ -21,7 +29,6 @@ if ($paginationNumber == "") {
 
 $vehicle_id = base64_decode($vehicle_id);
 
-echo $paginationNumber;
 
 
 ?>
@@ -64,10 +71,17 @@ echo $paginationNumber;
 </head>
 
 <body>
-    <?php
-    echo $return_msg;
-    ?>
+
     <div class="container">
+    <?php
+        if ($return_msg != "") {
+        ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $return_msg ?>
+            </div>
+        <?php
+        }
+        ?>
         <div class="row">
             <div class="col-md-2">
                 <img src="../images/iconset/name.png" width="200px" height="100px" />
