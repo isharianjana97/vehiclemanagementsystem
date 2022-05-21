@@ -456,7 +456,7 @@ if (!isset($_GET["status"])) {
                 }
             } catch (Exception $ex) {
                 $msg = $ex->getMessage();
-                echo $arrivalTime;
+                // echo $arrivalTime;
                 $msg =  base64_encode($msg);
             ?>
                 <script>
@@ -473,7 +473,7 @@ if (!isset($_GET["status"])) {
                 $msg =  base64_encode($msg);
             ?>
                 <script>
-                    window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                    window.location = "../view/salaries.php?pagination_number=<?php echo $paginationNumber ?>"
                 </script>
             <?php
             }
@@ -481,7 +481,7 @@ if (!isset($_GET["status"])) {
 
             ?>
             <script>
-                window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/salaries.php?pagination_number=<?php echo $paginationNumber ?>"
             </script>
 <?php
             break;
