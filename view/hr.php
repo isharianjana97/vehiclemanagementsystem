@@ -7,7 +7,11 @@ $moduleArray = $_SESSION["user_module"];
 include_once '../model/user_model.php';
 $userObj = new User();
 
-$user_id = $_GET["user_id"];
+$user_id = 0;
+$paginationNumber = "";
+if (isset($_GET['user_id'])){
+    $user_id = $_GET["user_id"];
+}
 
 if(isset($_GET["msg"])){
     $return_msg = $_GET["msg"];
@@ -18,7 +22,9 @@ if ($return_msg != "") {
     $return_msg = base64_decode($return_msg);
 }
 
-$paginationNumber = $_GET["pagination_number"];
+if (isset($_GET["pagination_number"])){
+    $paginationNumber = $_GET["pagination_number"];
+}
 if ($paginationNumber == "") {
     $paginationNumber = 0;
     $timesResult = $userObj->getUserTimeTablesFunction($user_id);
