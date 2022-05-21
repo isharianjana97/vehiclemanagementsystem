@@ -17,14 +17,9 @@ if (!isset($_GET["status"])) {
     include '../model/stock_model.php';
 
     $stockObj = new Stock();
-
     $categoryObj = new Category();
-
     $brandObj = new Brand();
-
     $productObj = new Product();
-
-
     $status = $_REQUEST["status"];
 
     switch ($status) {
@@ -52,13 +47,7 @@ if (!isset($_GET["status"])) {
                     window.location = "../view/categories.php?msg=<?php echo $msg; ?>"
                 </script>
                 <?php
-
-
-
             }
-
-
-
             break;
 
         case "add_brand":
@@ -97,9 +86,7 @@ if (!isset($_GET["status"])) {
             break;
 
         case "load_category":
-
             $cat_id = $_POST["cat_id"];
-
 
             $categoryResult = $categoryObj->getSpecificCategory($cat_id);
             $cat_row = $categoryResult->fetch_assoc();
@@ -156,7 +143,6 @@ if (!isset($_GET["status"])) {
 
             break;
 
-
         case "update_brand":
 
             $brand_id = $_POST["brand_id"];
@@ -172,8 +158,6 @@ if (!isset($_GET["status"])) {
         <?php
 
         case "generate_barcode":
-
-
             $barcode = $_POST["barcode"];
             $barcode =  urlencode($barcode);
 
@@ -214,12 +198,55 @@ if (!isset($_GET["status"])) {
             $unit_id = $_POST["unit_id"];
             $price = $_POST["price"];
             $product_image;
+            $imagename = $_FILES["product_image"]["name"];
 
             try {
 
-                $imagename = "" . time() . "_" . $_FILES["product_image"]["name"];
-                $temp = $_FILES["product_image"]["tmp_name"];
-                move_uploaded_file($temp, "../images/product_images/$imagename");
+                $target_dir = "../controller/uploads/";
+                $target_file = $target_dir . basename($_FILES["product_image"]["name"]);
+                $uploadOk = 1;
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                // Check if image file is a actual image or fake image
+                if (isset($_POST["submit"])) {
+                    $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+                    if ($check !== false) {
+                        echo "File is an image - " . $check["mime"] . ".";
+                        $uploadOk = 1;
+                    } else {
+                        echo "File is not an image.";
+                        $uploadOk = 0;
+                    }
+                }
+
+                // Check file size
+                if ($_FILES["product_image"]["size"] > 5000000) {
+                    echo "Sorry, your file is too large.";
+                    $uploadOk = 0;
+                }
+
+                // Allow certain file formats
+                if (
+                    $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                    && $imageFileType != "gif"
+                ) {
+                    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                    $uploadOk = 0;
+                }
+
+                // Check if $uploadOk is set to 0 by an error
+                if ($uploadOk == 0) {
+                    echo "Sorry, your file was not uploaded.";
+                    // if everything is ok, try to upload file
+                } else {
+
+                    if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                        echo "The file " . htmlspecialchars(basename($_FILES["product_image"]["name"])) . " has been uploaded.";
+                    } else {
+                        echo "Sorry, there was an error uploading your file.";
+                    }
+                }
+
+                // echo "<br>" . $prname . "<br>" . $barcode . "<br>" . $cat_id . "<br>" . $brand_id . "<br>" . $unit_id . "<br>" . $price . "<br>" . $imagename;
 
                 $product_id = $productObj->addProduct($prname, $barcode, $cat_id, $brand_id, $unit_id, $price, $imagename);
                 if ($product_id > 0) {
@@ -229,13 +256,199 @@ if (!isset($_GET["status"])) {
                     <script>
                         window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
                     </script>
-            <?php
+                <?php
                 }
             } catch (Exception $ex) {
             }
 
+            break;
 
 
+        case "update_product":
+
+            $prname = $_POST["prname"];
+            $barcode = $_POST["barcode"];
+            $cat_id = $_POST["cat_id"];
+            $brand_id = $_POST["brand_id"];
+            $unit_id = $_POST["unit_id"];
+            $price = $_POST["price"];
+            $recode_id = $_GET["recode_id"];
+            $product_image = $_GET["product_img"];
+            $imagename = $_FILES["product_image"]["name"];
+
+            echo trim($imagename);
+
+            if (trim($imagename) == ""){
+                echo "cccccccccccccccccccc". $product_image;
+                $imagename = $product_image;
+            }
+
+            ?>
+                <script type="text/javascript">
+                    console.log(<?php echo $price; ?>);
+                </script>
+            <?php
+
+            try {
+                if ($prname == "") {
+                    throw new Exception("Product Id can not be Empty!!!");
+                }
+
+                if ($barcode == "") {
+                    throw new Exception("barcode not be Empty!!!");
+                }
+
+                if ($cat_id == "") {
+                    throw new Exception("category id can not be is Empty!!!");
+                }
+                if ($brand_id == "") {
+                    throw new Exception("brand id can not be Empty!!!");
+                }
+
+                if ($unit_id == "") {
+                    throw new Exception("unit id can not be Empty!!!");
+                }
+
+                if ($price == "") {
+                    throw new Exception("price can not be Empty!!!");
+                }
+
+                ///  regular Expression validation
+                $date = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+                $numberOnly = "/^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)$/";
+                $timeOnly = "/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/";
+                $byGivenLength = "/^\s*(?:\S\s*){10,500}$/";
+                $byGivenLengthForName = "/^\s*(?:\S\s*){1,100}$/";
+
+                if (!preg_match($byGivenLengthForName, $prname)) {
+                    throw new Exception("Invalid Product Id Format");
+                }
+
+                if (!preg_match($numberOnly, $barcode)) {
+                    throw new Exception("Invalid barcod Format");
+                }
+
+                if (!preg_match($numberOnly, $cat_id)) {
+                    throw new Exception("category id Format");
+                }
+
+                if (!preg_match($byGivenLengthForName, $brand_id)) {
+                    throw new Exception("brand id is Invalid!!!");
+                }
+
+                if (!preg_match($byGivenLengthForName, $unit_id)) {
+                    throw new Exception("unit id is Invalid!!!");
+                }
+
+                if (!preg_match($numberOnly, $price)) {
+                    throw new Exception("price is Invalid!!!");
+                }
+            } catch (Exception $ex) {
+                $msg = $ex->getMessage();
+                $msg =  base64_encode($msg);
+                echo $price;
+                ?>
+                    <script>
+                        window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
+                    </script>
+                <?php
+                break;
+            }
+
+            try {
+
+                if (trim($imagename) != ""){
+                    
+                
+                    $target_dir = "../controller/uploads/";
+                    $target_file = $target_dir . basename($_FILES["product_image"]["name"]);
+                    $uploadOk = 1;
+                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                    // Check if image file is a actual image or fake image
+                    if (isset($_POST["submit"])) {
+                        $check = getimagesize($_FILES["product_image"]["tmp_name"]);
+                        if ($check !== false) {
+                            echo "File is an image - " . $check["mime"] . ".";
+                            $uploadOk = 1;
+                        } else {
+                            echo "File is not an image.";
+                            $uploadOk = 0;
+                        }
+                    }
+
+                    // Check file size
+                    if ($_FILES["product_image"]["size"] > 5000000) {
+                        echo "Sorry, your file is too large.";
+                        $uploadOk = 0;
+                    }
+
+                    // Allow certain file formats
+                    if (
+                        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                        && $imageFileType != "gif"
+                    ) {
+                        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                        $uploadOk = 0;
+                    }
+
+                    // Check if $uploadOk is set to 0 by an error
+                    if ($uploadOk == 0) {
+                        echo "Sorry, your file was not uploaded.";
+                        // if everything is ok, try to upload file
+                    } else {
+
+                        if (move_uploaded_file($_FILES["product_image"]["tmp_name"], $target_file)) {
+                            echo "The file " . htmlspecialchars(basename($_FILES["product_image"]["name"])) . " has been uploaded.";
+                        } else {
+                            echo "Sorry, there was an error uploading your file.";
+                        }
+                    }
+
+                }
+
+                // echo "<br>" . $prname . "<br>" . $barcode . "<br>" . $cat_id . "<br>" . $brand_id . "<br>" . $unit_id . "<br>" . $price . "<br>" . $product_image;
+
+                $product_id = $productObj->modifyCommidity($prname, $barcode, $cat_id, $brand_id, $unit_id, $price, $imagename, $recode_id);
+                if ($product_id > 0) {
+                    $msg = "Product Successfully Added!!!";
+                    $msg =  base64_encode($msg);
+                    echo "cvcvcv";
+                ?>
+                    <script>
+                        window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
+                    </script>
+            <?php
+                }
+            } catch (Exception $ex) {
+
+
+            }
+
+            break;
+
+
+        case "deactivate":
+            $recode_id = $_GET["recode_id"];
+            $productObj->deactivateInventoryItem($recode_id);
+            echo "dfdfd";
+            $msg = "succssfully deactivated";
+            ?>
+            <script>
+                window.location = "../view/view-products.php?msg=<?php echo $msg; ?>";
+            </script>
+        <?php
+
+            break;
+
+        case "activate":
+            $recode_id = $_GET["recode_id"];
+            $productObj->activateInventoryItem($recode_id);
+            $msg = "succssfully activated";
+        ?>
+            <script>
+                window.location = "../view/view-products.php?msg=<?php echo $msg; ?>";
+            </script>
+        <?php
 
             break;
 
@@ -244,7 +457,7 @@ if (!isset($_GET["status"])) {
 
             $productResult = $productObj->getSpecificProduct($product_id);
             $product_row = $productResult->fetch_assoc();
-            ?>
+        ?>
             <input type="hidden" name="product_id" value="<?php echo $product_row["product_id"]; ?>" />
             <div class="row">
                 <div class="col-md-6">
@@ -278,21 +491,14 @@ if (!isset($_GET["status"])) {
                     </div>
                 </div>
             </div>
-
 <?php
             break;
-
         case "add_stock":
-
             $product_id = $_POST["product_id"];
             $stock_date = $_POST["stock_date"];
             $stock_qty = $_POST["stock_qty"];
 
             $stockObj->addStock($product_id, $stock_qty, $stock_date);
-
-
-
-
 
             break;
         case "send_email":
@@ -308,9 +514,6 @@ if (!isset($_GET["status"])) {
 
             // $mail->addCC($client_email);
             $mail->addBCC('bcc@example.com');
-
-
-
 
             $mail->AddAttachment('../documents/stock_report/stock_report');
 

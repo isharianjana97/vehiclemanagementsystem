@@ -49,28 +49,6 @@ class Vehicle
 
         $conn = $GLOBALS["conn"];
         try {
-            // $sql = "INSERT INTO vehicle_management_db.vehicle_service
-            // (
-            // vehicle_id,
-            // vehicle_name,
-            // vehicle_issue,
-            // customer_name,
-            // arrived_on,
-            // delivered_on,
-            // task_charge,
-            // vehicle_image)
-            // VALUES
-            // (
-            //     '$vid', 
-            //     '$vname', 
-            //     '$issue',
-            //     '$customername', 
-            //     '$arrivalDate $arrivalTime', 
-            //     '$deliverydate $deliverytime', 
-            //     '$charge', 
-            //     '$photo'
-            // )";
-
             $sql = "UPDATE vehicle_management_db.vehicle_service 
                     SET 
                         vehicle_id = '$vid',
@@ -91,7 +69,7 @@ class Vehicle
         }
 
         $result = $conn->query($sql);
-        // return $result;
+        return $result;
     }
 
     public function getUserById($user_id)
@@ -179,8 +157,6 @@ class Vehicle
         $sql = "INSERT INTO login(login_username,login_password,user_id)VALUES('$username','$pw','$user_id')";
         $result = $conn->query($sql) or die($conn->error);
     }
-
-
 
     public function activateUser($user_id)
     {
