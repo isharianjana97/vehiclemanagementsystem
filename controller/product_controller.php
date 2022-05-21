@@ -254,7 +254,7 @@ if (!isset($_GET["status"])) {
                     $msg =  base64_encode($msg);
                 ?>
                     <script>
-                        window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
+                        window.location = "../view/view-products.php"
                     </script>
                 <?php
                 }
@@ -415,7 +415,7 @@ if (!isset($_GET["status"])) {
                     echo "cvcvcv";
                 ?>
                     <script>
-                        window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
+                        window.location = "../view/view-products.php"
                     </script>
             <?php
                 }
@@ -434,7 +434,7 @@ if (!isset($_GET["status"])) {
             $msg = "succssfully deactivated";
             ?>
             <script>
-                window.location = "../view/view-products.php?msg=<?php echo $msg; ?>";
+                window.location = "../view/view-products.php";
             </script>
         <?php
 
