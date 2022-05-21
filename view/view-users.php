@@ -92,7 +92,7 @@ $moduleArray = $_SESSION["user_module"];
 
                             <tr>
                                 <td>
-                                    <img src="../images/user_images/<?php echo $userImage ?> " width="60" height="80px" />
+                                    <img src="../controller/uploads/<?php echo $userImage ?> " width="60" height="80px" />
                                 </td>
                                 <td><?php echo ucwords($user_row["user_fname"] . " " . $user_row["user_lname"]);    ?></td>
                                 <td><?php echo $user_row["user_nic"];  ?></td>

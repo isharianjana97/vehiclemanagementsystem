@@ -31,14 +31,54 @@ class Product{
         
     }
 
+    public function modifyCommidity($prname, $barcode, $cat_id, $brand_id, $unit_id, $price, $imagename, $recode_id)
+    {
+        echo $prname, $barcode, $cat_id, $brand_id, $unit_id, $price, $imagename, $recode_id;
+        $conn = $GLOBALS["conn"];
+        try {
+            $sql = "UPDATE `vehicle_management_db`.`product`
+                    SET
+                    `product_name` = '$prname',
+                    `unit_id` = '$unit_id',
+                    `cat_id` = '$cat_id',
+                    `brand_id` = '$brand_id',
+                    `product_price` = '$price',
+                    `barcode_number` = '$barcode',
+                    `product_image` = '$imagename'
+                    WHERE `product_id` = '$recode_id'";
+
+
+        } catch (Exception $e) {
+
+            echo $e;
+        }
+
+        $result = $conn->query($sql);
+        return $result;
+    }
+
     public function addProduct($prname,$barcode,$cat_id,$brand_id,$unit_id,$price,$product_image)
     {
         $conn= $GLOBALS["conn"];
-        $sql="INSERT INTO product(product_name,unit_id,cat_id,brand_id,product_price,barcode_number,product_image)VALUES"
-                . "('$prname','$unit_id','$cat_id','$brand_id','$price','$barcode','$product_image')";
+        $sql = "INSERT INTO `vehicle_management_db`.`product`(`product_name`,`unit_id`,`cat_id`,`brand_id`,`product_price`,`barcode_number`,`product_image`,`product_status`) VALUES ('$prname','$unit_id','$cat_id','$brand_id','$price','$barcode','$product_image',1)";
         $result=$conn->query($sql) or die($conn->error);
         return $result;
-        return $conn->insert_id;
+    }
+
+    public function deactivateInventoryItem($product_id)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "UPDATE `vehicle_management_db`.`product` SET product_status=0 WHERE product_id='$product_id'";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
+
+    public function activateInventoryItem($product_id)
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "UPDATE `vehicle_management_db`.`product` SET product_status=1 WHERE product_id='$product_id'";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
     }
 
     public function getUserTimeTablesFunction()

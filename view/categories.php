@@ -198,7 +198,7 @@ $brandResult = $brandObj->getAllBrands();  //get all brands
                                     <th><?php echo $cat_row["cat_id"] ?></th>
                                     <th><?php echo ucwords($cat_row["cat_name"]) ?></th>
                                     <th>
-                                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#editCat" <!-- edit category -->
+                                        <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#editCat" 
                                             onclick="loadCategory('<?php echo $cat_id ?>');">
                                             <!-- pass catid to the function and load category -->
                                             <span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit

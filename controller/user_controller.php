@@ -24,18 +24,12 @@ if (!isset($_GET["status"])) {
 
     switch ($status) {
         case "get_functions":
-
             $role_id = $_POST["role_id"];
-
-
-
             $moduleResult = $userObj->getModulesByRole($role_id);
 
             while ($module_row = $moduleResult->fetch_assoc()) {
                 $module_id = $module_row["module_id"];
-
                 $functionResult = $userObj->getModuleFunctions($module_id);
-
     ?>
                 <div class="col-md-4">
                     <label class="control-label"><?php echo $module_row["module_name"];  ?></label> <!-- GET modules -->
@@ -68,8 +62,6 @@ if (!isset($_GET["status"])) {
             $user_role = $_POST["user_role"];
             $user_function = $_POST["user_function"];
             $gender = $_POST["gender"];
-
-
 
             try {
                 if ($fname == "") {
@@ -118,10 +110,7 @@ if (!isset($_GET["status"])) {
                     throw new Exception("Invalid Email");
                 }
 
-
-
                 ///  file uploading
-
 
                 if (isset($_FILES["user_img"]))  //  already selected a file
                 {
@@ -153,10 +142,6 @@ if (!isset($_GET["status"])) {
                 $user_id = $userObj->addUser($fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role); //Calling the function
                 if ($user_id > 0) {
                     $userObj->addUserLogin($user_id, $email, $nic);
-
-
-                    ////  if user is added succesfully
-
                     //  looping through user functions
 
                     foreach ($user_function as $f) {
@@ -276,8 +261,6 @@ if (!isset($_GET["status"])) {
                     throw new Exception("Invalid Email");
                 }
 
-
-
                 ///  file uploading
 
                 if ($_FILES["user_img"]["name"] != "")  //  already selected a file
@@ -307,7 +290,6 @@ if (!isset($_GET["status"])) {
                 }
 
                 $userObj->updateUser($user_id, $fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role);  //pass update user functions 
-
 
                 $userObj->removeUserFunctions($user_id);   ///  delete assigned functions
 
