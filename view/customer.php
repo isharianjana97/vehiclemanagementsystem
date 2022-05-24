@@ -4,14 +4,13 @@ include '../commons/sessions.php';
 ///  getting user module information
 $moduleArray = $_SESSION["user_module"];
 
-include_once '../model/vehicle_model.php';
-$vehicleObj = new Vehicle();
-
-$vehicle_id = $_GET["user_id"];
+include_once '../model/customer_model.php';
+$customerObj = new Customer();
+$customer_id = $_GET["user_id"];
 $return_msg = $_GET["msg"];
-if(isset($_GET["msg"])){
+if (isset($_GET["msg"])) {
     $return_msg = $_GET["msg"];
-}else{
+} else {
     $return_msg = "";
 }
 if ($return_msg != "") {
@@ -21,13 +20,13 @@ if ($return_msg != "") {
 $paginationNumber = $_GET["pagination_number"];
 if ($paginationNumber == "") {
     $paginationNumber = 0;
-    $timesResult = $vehicleObj->getVehicleAllFunction($vehicle_id);
+    $timesResult = $customerObj->getCustomers();
 } else {
     $paginationNumber = (int)$paginationNumber;
-    $timesResult = $vehicleObj->getVehiclePaginationFunction($paginationNumber);
+    $timesResult = $customerObj->getCustomerPaginationFunction($paginationNumber);
 }
 
-$vehicle_id = base64_decode($vehicle_id);
+$customer_id = base64_decode($customer_id);
 
 ?>
 <html>
@@ -62,8 +61,6 @@ $vehicle_id = base64_decode($vehicle_id);
         th {
             background: #947;
         }
-
-
     </style>
 
 </head>
@@ -71,7 +68,7 @@ $vehicle_id = base64_decode($vehicle_id);
 <body>
 
     <div class="container">
-    <?php
+        <?php
         if ($return_msg != "") {
         ?>
             <div class="alert alert-danger" role="alert">
@@ -92,14 +89,13 @@ $vehicle_id = base64_decode($vehicle_id);
         <hr />
         <div class="row">
             <div class="col-md-2"><span class="glyphicon glyphicon-user"></span>
-
                 &nbsp;
                 <?php
                 echo ucwords($_SESSION["user"]["user_fname"] . " " . $_SESSION["user"]["user_lname"]);
                 ?>
             </div>
             <div class="col-md-8">
-                <h4 align="center"> Human Resource Management </h4>
+                <h4 align="center"> Customer Management </h4>
             </div>
             <div class="col-md-2">
                 <span class="glyphicon glyphicon-bell"></span>
@@ -119,33 +115,32 @@ $vehicle_id = base64_decode($vehicle_id);
         <div class="row">
             <div class="col-md-3">
                 <ul class="list-group">
-                    <?php include_once '../includes/servicescheduling-navigation.php'; ?>
+                    <?php include_once '../includes/customer-navigation.php'; ?>
                     <div class="col-md-4">
-                        <a href="./generated_sales_report.php?status=save" class="btn btn-success">
+                        <a href="./generated_customer_report.php?status=save" class="btn btn-success">
                             <span class="glyphicon glyphicon-floppy-save"></span> &nbsp;
-                            Save Sales Report
+                            Save customer Report
                         </a>
                     </div>
+
+
+
+
 
             </div>
             <div class="col-md-9">
                 <div class="tableFixHead" style="overflow: auto;">
-                    <div style="width: 200%;">
+                    <div style="width: 100%;">
                         <table class="table table-striped" style="border: 1px solid;">
                             <thead>
                                 <tr style="background-color: #1796bd;color: #FFF ">
-                                    <th> &nbsp; </th>
-                                    <th> Id </th>
-                                    <th style="width:100px;"> Vehicle Id </th>
-                                    <th style="width:100px;"> Vehicle name </th>
-                                    <th> Vehicle issue </th>
-                                    <th style="width:200px;"> Customer Name </th>
-                                    <th style="width:150px;"> Arrived on </th>
-                                    <th style="width:150px;"> Delivered on</th>
-                                    <th> Charge </th>
-                                    <th> status </th>
-                                    <th> &nbsp; </th>
-                                    <th> &nbsp; </th>
+                                    <th style="width:30px;"> Id </th>
+                                    <th style="width:50px;"> Customer name </th>
+                                    <th style="width:100px;"> Customer Email </th>
+                                    <th style="width:150px;"> Customer contact </th>
+                                    <th style="width:100px;"> &nbsp; </th>
+                                    <th style="width:100px;"> &nbsp; </th>
+
 
                                 </tr>
                             </thead>
@@ -153,7 +148,7 @@ $vehicle_id = base64_decode($vehicle_id);
                                 <?php
                                 $userImage = "defaultImage.jpg";
                                 while ($user_row = $timesResult->fetch_assoc()) {
-                                    // $vehicle_id =  base64_encode($user_row["userId"]);
+                                    // $customer_id =  base64_encode($user_row["userId"]);
                                     $recode_id = $user_row["id"];
                                     // echo $user_row["id"];
 
@@ -165,36 +160,16 @@ $vehicle_id = base64_decode($vehicle_id);
                                 ?>
 
                                     <tr>
+                                        <td><?php echo $user_row["customer_id"];  ?></td>
+                                        <td><?php echo $user_row["customer_fname"]. " ". $user_row["customer_lname"];  ?></td>
+                                        <td><?php echo $user_row["customer_email"];  ?></td>
+                                        <td><?php echo $user_row["customer_contact"];  ?></td>
 
-                                        <td><?php echo $user_row["id"];  ?></td>
                                         <td>
-                                            <img src="<?php echo "../controller/uploads/" . $user_row['vehicle_image'] ?> " width="60" height="80px" />
-                                        </td>
-                                        <td><?php echo $user_row["vehicle_id"];  ?></td>
-                                        <td><?php echo $user_row["vehicle_name"];  ?></td>
-                                        <td><?php echo $user_row["vehicle_issue"];  ?></td>
-                                        <td><?php echo $user_row["customer_name"];  ?></td>
-                                        <td class="arrival-time"><?php echo $user_row["arrived_on"];  ?></td>
-                                        <td class="arrival-time"><?php echo $user_row["delivered_on"];  ?></td>
-                                        <td><?php echo $user_row["task_charge"];  ?></td>
-                                        <td>
-                                            <?php
-                                            if ($user_row["status"] == "0") {   
-                                            ?>
-                                                <a href="../controller/vehicle_controller.php?status=finish&vehicle_id=<?php echo $user_row["vehicle_id"] ?>&recode_id=<?php echo $user_row["id"] ?>&field_name=<?php echo "status" ?>&data=<?php echo "1" ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span>&nbsp; Set As finished</a>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <button type="button" class="btn btn-success" disabled><span class="glyphicon glyphicon-ok"></span>&nbsp; Finished</button>
-                                            <?php
-                                            }
-                                            ?>
+                                            <a href="../view/update-customer.php?status=update&customer_id=<?php echo $user_row["customer_id"] ?>&customer_contact=<?php echo $user_row["customer_contact"] ?>&customer_email=<?php echo $user_row["customer_email"] ?>&customer_fname=<?php echo $user_row["customer_fname"]?>&customer_lname=<?php echo $user_row["customer_lname"] ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Update</a>
                                         </td>
                                         <td>
-                                            <a href="../view/updatedeal.php?status=update&vehicle_id=<?php echo $user_row["vehicle_id"] ?>&vehicle_name=<?php echo $user_row["vehicle_name"] ?>&vehicle_issue=<?php echo $user_row["vehicle_issue"] ?>&customer_name=<?php echo $user_row["customer_name"] ?>&arrived_on=<?php echo $user_row["arrived_on"] ?>&delivered_on=<?php echo $user_row["delivered_on"] ?>&task_charge=<?php echo $user_row["task_charge"] ?>&vehicle_image=<?php echo $user_row["vehicle_image"] ?>&recode_id=<?php echo $user_row["id"] ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-primary"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Update</a>
-                                        </td>
-                                        <td>
-                                            <a href="../controller/vehicle_controller.php?status=delete&vehicle_id=<?php echo $user_row["vehicle_id"] ?>&recode_id=<?php echo $user_row["id"] ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp; Delete</a>
+                                            <a href="../controller/customer_controller.php?status=delete&customer_id=<?php echo $user_row["customer_id"] ?>&recode_id=<?php echo $user_row["id"] ?>&pagination_number=<?php echo $paginationNumber ?>" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span>&nbsp; Delete</a>
                                         </td>
 
                                     </tr>
@@ -219,11 +194,11 @@ $vehicle_id = base64_decode($vehicle_id);
 
                             <nav aria-label="Page float-right navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="../view/serviceschedule.php?pagination_number=<?php echo $paginationNumber - 1 ?>">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/serviceschedule.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber + 1 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/serviceschedule.php?pagination_number=<?php echo $paginationNumber + 1 ?>"><?php echo $paginationNumber + 2 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/serviceschedule.php?pagination_number=<?php echo $paginationNumber + 2 ?>"><?php echo $paginationNumber + 3 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/serviceschedule.php?pagination_number=<?php echo $paginationNumber + 3 ?>">Next</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/customer.php?pagination_number=<?php echo $paginationNumber - 1 ?>">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/customer.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber + 1 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/customer.php?pagination_number=<?php echo $paginationNumber + 1 ?>"><?php echo $paginationNumber + 2 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/customer.php?pagination_number=<?php echo $paginationNumber + 2 ?>"><?php echo $paginationNumber + 3 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/customer.php?pagination_number=<?php echo $paginationNumber + 3 ?>">Next</a></li>
                                 </ul>
                             </nav>
                         </div>

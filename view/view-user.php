@@ -231,7 +231,7 @@ $userrow=$userResult->fetch_assoc(); // will convert the record onto associative
                                    $userimage=$userrow["user_image"];
                                }
                                ?>
-                                <img src="../images/user_images/<?php echo $userimage;?>" width="100" height="120px"/>
+                                <img src="../controller/uploads/<?php echo $userimage;?>" width="100" height="120px"/>
                             </div>
                         </div>
                             
