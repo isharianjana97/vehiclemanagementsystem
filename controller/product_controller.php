@@ -256,12 +256,65 @@ if (!isset($_GET["status"])) {
                     <script>
                         window.location = "../view/view-products.php"
                     </script>
-                <?php
+            <?php
                 }
             } catch (Exception $ex) {
             }
 
             break;
+
+
+        case "view_product":
+            $product_id = $_POST["product_id"];
+
+            $productResult = $productObj->getSpecificProduct($product_id);
+            $product_row = $productResult->fetch_assoc();
+            ?>
+            <input type="hidden" name="product_id" value="<?php echo $product_row["product_id"]; ?>" />
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Name : <?php echo ucwords($product_row["product_name"]);  ?></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Brand : <?php echo ucwords($product_row["brand_name"]);  ?></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Category : <?php echo ucwords($product_row["cat_name"]);  ?></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Price : <?php echo ucwords($product_row["product_price"]);  ?></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label>Product Barcode : <?php echo ucwords($product_row["barcode_number"]);  ?></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+        <?php
+            break; //view product
+
 
 
         case "update_product":
@@ -278,15 +331,15 @@ if (!isset($_GET["status"])) {
 
             echo trim($imagename);
 
-            if (trim($imagename) == ""){
-                echo "cccccccccccccccccccc". $product_image;
+            if (trim($imagename) == "") {
+                echo "cccccccccccccccccccc" . $product_image;
                 $imagename = $product_image;
             }
 
-            ?>
-                <script type="text/javascript">
-                    console.log(<?php echo $price; ?>);
-                </script>
+        ?>
+            <script type="text/javascript">
+                console.log(<?php echo $price; ?>);
+            </script>
             <?php
 
             try {
@@ -347,19 +400,19 @@ if (!isset($_GET["status"])) {
                 $msg = $ex->getMessage();
                 $msg =  base64_encode($msg);
                 echo $price;
-                ?>
-                    <script>
-                        window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
-                    </script>
+            ?>
+                <script>
+                    window.location = "../view/view-products.php?msg=<?php echo $msg; ?>"
+                </script>
                 <?php
                 break;
             }
 
             try {
 
-                if (trim($imagename) != ""){
-                    
-                
+                if (trim($imagename) != "") {
+
+
                     $target_dir = "../controller/uploads/";
                     $target_file = $target_dir . basename($_FILES["product_image"]["name"]);
                     $uploadOk = 1;
@@ -403,7 +456,6 @@ if (!isset($_GET["status"])) {
                             echo "Sorry, there was an error uploading your file.";
                         }
                     }
-
                 }
 
                 // echo "<br>" . $prname . "<br>" . $barcode . "<br>" . $cat_id . "<br>" . $brand_id . "<br>" . $unit_id . "<br>" . $price . "<br>" . $product_image;
@@ -420,8 +472,6 @@ if (!isset($_GET["status"])) {
             <?php
                 }
             } catch (Exception $ex) {
-
-
             }
 
             break;
