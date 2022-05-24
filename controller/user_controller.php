@@ -24,16 +24,14 @@ if (!isset($_GET["status"])) {
 
     switch ($status) {
         case "get_functions":
-
             $role_id = $_POST["role_id"];
-
+            
             $moduleResult = $userObj->getModulesByRole($role_id);
-
+            
+            echo "cccccccccccccccccccccccccc". $role_id;
             while ($module_row = $moduleResult->fetch_assoc()) {
                 $module_id = $module_row["module_id"];
-
                 $functionResult = $userObj->getModuleFunctions($module_id);
-
     ?>
                 <div class="col-md-4">
                     <label class="control-label"><?php echo $module_row["module_name"];  ?></label> <!-- GET modules -->
@@ -56,6 +54,7 @@ if (!isset($_GET["status"])) {
             break;
 
         case "add_user":
+            echo "xssssssssssss";
 
             $fname = $_POST["fname"];
             $lname = $_POST["lname"];
@@ -66,7 +65,6 @@ if (!isset($_GET["status"])) {
             $user_role = $_POST["user_role"];
             $user_function = $_POST["user_function"];
             $gender = $_POST["gender"];
-
 
 
             try {
@@ -92,9 +90,9 @@ if (!isset($_GET["status"])) {
 
                     throw new Exception("User Role Cannot be Empty!");
                 }
-                if (sizeof($user_function) == 0) {
-                    throw new Exception("A USer Function Must Be Selected");
-                }
+                // if (sizeof($user_function) == 0) {
+                //     throw new Exception("A USer Function Must Be Selected");
+                // }
 
                 // above  size of get the lenght of the array
                 ///  regular Expression validation
@@ -116,10 +114,7 @@ if (!isset($_GET["status"])) {
                     throw new Exception("Invalid Email");
                 }
 
-
-
                 ///  file uploading
-
 
                 if (isset($_FILES["user_img"]))  //  already selected a file
                 {
@@ -151,10 +146,6 @@ if (!isset($_GET["status"])) {
                 $user_id = $userObj->addUser($fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role); //Calling the function
                 if ($user_id > 0) {
                     $userObj->addUserLogin($user_id, $email, $nic);
-
-
-                    ////  if user is added succesfully
-
                     //  looping through user functions
 
                     foreach ($user_function as $f) {
@@ -274,8 +265,6 @@ if (!isset($_GET["status"])) {
                     throw new Exception("Invalid Email");
                 }
 
-
-
                 ///  file uploading
 
                 if ($_FILES["user_img"]["name"] != "")  //  already selected a file
@@ -305,7 +294,6 @@ if (!isset($_GET["status"])) {
                 }
 
                 $userObj->updateUser($user_id, $fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role);  //pass update user functions 
-
 
                 $userObj->removeUserFunctions($user_id);   ///  delete assigned functions
 
@@ -354,9 +342,9 @@ if (!isset($_GET["status"])) {
             $msg = "User Data Recoded";
             ?>
             <script>
-                window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"
             </script>
-        <?php
+            <?php
             break;
 
         case "arrive":
@@ -366,34 +354,140 @@ if (!isset($_GET["status"])) {
             $paginationNumber = $_GET["pagination_number"];
 
 
-            echo $user_id, " ", $arrivalDate, $arrivalTime;
+            try {
+                if ($user_id == "") {
+                    throw new Exception("User Id can not be Empty!!!");
+                }
 
-            $userObj->setArrivedUser($user_id, $arrivalDate, $arrivalTime);
+                if ($arrivalDate == "") {
+                    throw new Exception("arrival date is Empty!!!");
+                }
+                if ($arrivalTime == "") {
+                    throw new Exception("arrival time is Empty!!!");
+                }
+
+                ///  regular Expression validation
+                $date = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+                $numberOnly = "/^[1-9]\d*$/";
+                $timeOnly = "/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/";
+
+                if (!preg_match($date, $arrivalDate)) {
+                    throw new Exception("Invalid arrival date Format");
+                }
+
+                if (!preg_match($timeOnly, $arrivalTime)) {
+                    throw new Exception("Invalid arrival time Format");
+                }
+
+                if (!preg_match($numberOnly, $user_id)) {
+                    throw new Exception("User Id is Invalid!!!");
+                }
+            } catch (Exception $ex) {
+                $msg = $ex->getMessage();
+                echo $arrivalTime;
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+                break;
+            }
+
+            try {
+                $userObj->setArrivedUser($user_id, $arrivalDate, $arrivalTime);
+            } catch (Exception $ex) {
+                $msg = "User doesn't exist";
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/hr.php?&msg=<?php echo $msg; ?>pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+            }
+
             $msg = "User Data Recoded";
-        ?>
+            $msg =  base64_encode($msg);
+            ?>
             <script>
-                window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/hr.php?&pagination_number=<?php echo $paginationNumber; ?>"
             </script>
-        <?php
+            <?php
             break;
 
         case "payment":
-            $user_id = $_POST["userId"];
-            $amount = $_POST["amount"];
-            $arrivalDate = $_POST["arrivalDate"];
-            $arrivalTime = $_POST["arrivalTime"];
-            $paginationNumber = $_GET["pagination_number"];
+            $user_id = trim($_POST["userId"]);
+            $amount = trim($_POST["amount"]);
+            $arrivalDate = trim($_POST["arrivalDate"]);
+            $arrivalTime = trim($_POST["arrivalTime"]);
+            $paginationNumber = trim($_GET["pagination_number"]);
 
+            try {
+                if ($user_id == "") {
+                    throw new Exception("User Id can not be Empty!!!");
+                }
 
-            echo $user_id, " ", $arrivalDate, $arrivalTime;
+                if ($amount == "") {
+                    throw new Exception("Amount can not be Empty!!!");
+                }
 
-            $userObj->setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime);
+                if ($arrivalDate == "") {
+                    throw new Exception("arrival date is Empty!!!");
+                }
+                if ($arrivalTime == "") {
+                    throw new Exception("arrival time is Empty!!!");
+                }
+
+                ///  regular Expression validation
+                $date = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+                $numberOnly = "/^[1-9]\d*$/";
+                $timeOnly = "/^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/";
+
+                if (!preg_match($date, $arrivalDate)) {
+                    throw new Exception("Invalid arrival date Format");
+                }
+
+                if (!preg_match($numberOnly, $amount)) {
+                    throw new Exception("Invalid amount Format");
+                }
+
+                if (!preg_match($timeOnly, $arrivalTime)) {
+                    throw new Exception("Invalid arrival time Format");
+                }
+
+                if (!preg_match($numberOnly, $user_id)) {
+                    throw new Exception("User id is Invalid!!!");
+                }
+            } catch (Exception $ex) {
+                $msg = $ex->getMessage();
+                // echo $arrivalTime;
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+                break;
+            }
+
+            try {
+                $userObj->setPaidUser($user_id, $amount, $arrivalDate, $arrivalTime);
+            } catch (Exception $ex) {
+                $msg = "User Doesn't exist";
+                $msg =  base64_encode($msg);
+            ?>
+                <script>
+                    window.location = "../view/salaries.php?pagination_number=<?php echo $paginationNumber ?>"
+                </script>
+            <?php
+            }
             $msg = "User Salary Data Recoded";
-        ?>
+
+            ?>
             <script>
-                window.location = "../view/salaries.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/salaries.php?pagination_number=<?php echo $paginationNumber ?>"
             </script>
-        <?php
+<?php
             break;
     }
 }

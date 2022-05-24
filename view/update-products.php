@@ -50,7 +50,7 @@ $brandResult = $brandObj->getAllBrands();
                 ?>
             </div>
             <div class="col-md-8">
-                <h4 align="center"> Add Product </h4>
+                <h4 align="center"> Update Product </h4>
             </div>
             <div class="col-md-2">
                 <span class="glyphicon glyphicon-bell"></span>
@@ -73,7 +73,7 @@ $brandResult = $brandObj->getAllBrands();
                 ?>
             </div>
             <div class="col-md-9">
-                <form action="../controller/product_controller.php?status=add_product" enctype="multipart/form-data" method="post">
+                <form action="../controller/product_controller.php?status=update_product&recode_id=<?php echo $_GET['recode_id'] ?>&product_img=<?php echo $_GET["product_img"]; ?>" enctype="multipart/form-data" method="post">
 
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3" id="alertdiv">&nbsp;</div> <!-- Display alert message-->
@@ -110,15 +110,15 @@ $brandResult = $brandObj->getAllBrands();
                             <label class="control-label"> Commodity Name </label>
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="prname" id="prname" class="form-control" />
+                            <input type="text" name="prname" id="prname" class="form-control" value="<?php echo $_GET['product_name']; ?>" />
                         </div>
 
                         <div class="col-md-2">
                             <label class="control-label"> Barcode Number</label> <!--   Enter barcode name -->
                         </div>
                         <div class="col-md-4">
-                            <input type="text" name="barcode" id="barcode" class="form-control" required="required" />
-                            <span id="displayvalidate"></span>
+                            <input type="text" name="barcode" id="barcode" class="form-control" required="required" value="<?php echo $_GET['recode_id']; ?>" />
+                            <span id="display validate"></span>
                         </div>
                     </div>
 
@@ -148,10 +148,22 @@ $brandResult = $brandObj->getAllBrands();
                                 <select class="form-control" id="cat_id" name="cat_id">
                                     <?php
                                     while ($cat_row = $categoryResult->fetch_assoc()) {
+                                        if ($cat_row["cat_name"] == $_GET["cat_name"]) {
                                     ?>
-                                        <option value="<?php echo $cat_row["cat_id"]; ?>">
-                                            <?php echo $cat_row["cat_name"]; ?>
-                                        </option>
+                                            <option value="<?php echo $cat_row["cat_id"]; ?>" selected>
+                                                <?php echo $cat_row["cat_name"]; ?>
+                                            </option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $cat_row["cat_id"]; ?>">
+                                                <?php echo $cat_row["cat_name"]; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+
+
                                     <?php
                                     }
                                     ?>
@@ -165,11 +177,23 @@ $brandResult = $brandObj->getAllBrands();
                                 <select class="form-control" id="brand_id" name="brand_id">
                                     <?php
                                     while ($brand_row = $brandResult->fetch_assoc()) {
+
+                                        if ($brand_row["brand_name"] == $_GET["brand_name"]) {
                                     ?>
-                                        <option value="<?php echo $brand_row["brand_id"]; ?>">
-                                            <?php echo $brand_row["brand_name"]; ?>
-                                        </option>
+                                            <option value="<?php echo $brand_row["brand_id"]; ?>" selected>
+                                                <?php echo $brand_row["brand_name"]; ?>
+                                            </option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $brand_row["brand_id"]; ?>">
+                                                <?php echo $brand_row["brand_name"]; ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
                                     <?php
+
                                     }
                                     ?>
                                 </select>
@@ -185,11 +209,22 @@ $brandResult = $brandObj->getAllBrands();
                                 <select class="form-control" id="unit_id" name="unit_id">
                                     <?php
                                     while ($unit_row = $unitResult->fetch_assoc()) {
+                                        if ($unit_row["unit_name"] == $_GET["unit_name"]) {
                                     ?>
-                                        <option value="<?php echo $unit_row["unit_id"]; ?>">
-                                            <?php echo $unit_row["unit_name"];  ?>
-                                        </option>
+                                            <option value="<?php echo $unit_row["unit_id"]; ?>" selected>
+                                                <?php echo $unit_row["unit_name"];  ?>
+                                            </option>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <option value="<?php echo $unit_row["unit_id"]; ?>">
+                                                <?php echo $unit_row["unit_name"];  ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
                                     <?php
+
                                     }
                                     ?>
                                 </select>
@@ -209,7 +244,7 @@ $brandResult = $brandObj->getAllBrands();
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon"> Rs </span>
-                                <input type="text" class="form-control" name="price" id="price" />
+                                <input type="text" class="form-control" name="price" id="price" value="<?php echo $_GET["product_price"]; ?>"/>
                             </div>
                         </div>
 
@@ -225,7 +260,7 @@ $brandResult = $brandObj->getAllBrands();
                     <div class="row">
                         <div class="col-md-6 col-md-offset-9">
                             </br>
-                            <img id="imgprev" width="120px" height="80px" />
+                            <img id="imgprev" src="../controller/uploads/<?php echo $_GET["product_img"]; ?>" width="120px" height="80px" />
                         </div>
 
                     </div>
@@ -259,16 +294,16 @@ $brandResult = $brandObj->getAllBrands();
     readImage(input) {
         //check if I have selected a file
         if (input.files && input.files[0]) {
-            var reader = new FileReader(); 
-            reader.onload = function(e)  {
-                    $("#imgprev")
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $("#imgprev")
                     .attr('src', e.target.result)
                     .width(120)
                     .height(80)
-                };
+            };
             reader.readAsDataURL(input.files[0])
         }
     }
-</script> 
+</script>
 
 </html>

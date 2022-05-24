@@ -4,39 +4,22 @@ include '../commons/sessions.php';
 ///  getting user module information
 $moduleArray = $_SESSION["user_module"];
 
-include_once '../model/vehicle_model.php';
-$vehicleObj = new Vehicle();
+include_once '../model/customer_model.php';
+$customerObj = new customer();
 
-$vehicle_id = $_GET["user_id"];
+$customer_id = $_GET["user_id"];
 $return_msg = $_GET["msg"];
-
-$recode_id = $_GET["recode_id"];
-$imageloc = $_GET["vehicle_image"];
-$vehicle_ids = $_GET["vehicle_id"];
-$vehicle_name = $_GET["vehicle_name"];
-$vehicle_issue = $_GET["vehicle_issue"];
-$customer_name = $_GET["customer_name"];
-$arrived_on = $_GET["arrived_on"];
-$delivered_on = $_GET["delivered_on"];
-$delivered_on = substr($delivered_on,0,11);
-$task_charge = $_GET["task_charge"];
-
-// echo date('H-i-s',strtotime($arrived_on)). "<br>". $imageloc. "<br>". $vehicle_id. "<br>". $vehicle_issue. "<br>". $
-
 
 $paginationNumber = $_GET["pagination_number"];
 if ($paginationNumber == "") {
     $paginationNumber = 0;
-    $timesResult = $vehicleObj->getVehicleAllFunction($vehicle_id);
+    $timesResult = $customerObj->getcustomerAllFunction($customer_id);
 } else {
     $paginationNumber = (int)$paginationNumber;
-    $timesResult = $vehicleObj->getVehiclePaginationFunction($paginationNumber);
+    $timesResult = $customerObj->getcustomerPaginationFunction($paginationNumber);
 }
 
-$vehicle_id = base64_decode($vehicle_id);
-
-// echo $paginationNumber;
-
+$customer_id = base64_decode($customer_id);
 
 ?>
 <html>
@@ -153,7 +136,7 @@ $vehicle_id = base64_decode($vehicle_id);
                 ?>
             </div>
             <div class="col-md-8">
-                <h4 align="center"> Human Resource Management </h4>
+                <h4 align="center"> Customer Management </h4>
             </div>
             <div class="col-md-2">
                 <span class="glyphicon glyphicon-bell"></span>
@@ -173,7 +156,7 @@ $vehicle_id = base64_decode($vehicle_id);
         <div class="row">
             <div class="col-md-3">
                 <ul class="list-group">
-                    <?php include_once '../includes/servicescheduling-navigation.php'; ?>
+                    <?php include_once '../includes/customer-navigation.php'; ?>
                     <div class="col-md-4">
                         <a href="./generated_attendance_report.php?status=save" class="btn btn-success">
                             <span class="glyphicon glyphicon-floppy-save"></span> &nbsp;
@@ -183,21 +166,24 @@ $vehicle_id = base64_decode($vehicle_id);
             </div>
             <div class="col-md-9">
 
-                <form action="../controller/vehicle_controller.php?status=modify_deal&photo=<?php echo $imageloc ?>&recode_id=<?php echo $recode_id ?>" method="post" enctype="multipart/form-data">
-                    <h2>Update Deal</h2>
+                <form action="../controller/customer_controller.php?status=add_customer&recode_id=<?php echo $customer_ids ?>&pagination_number=<?php echo $pagination_number ?>" method="post" enctype="multipart/form-data">
+                    <h2>add new customer</h2>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="first">Vehicle Identifier</label>
-                                <input type="text" class="form-control" placeholder="" id="vid" name="vid" value="<?php echo $vehicle_ids ?>">
-                            </div>
-                        </div>
-                        <!--  col-md-6   -->
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="last">Vehicle Name</label>
-                                <input type="text" class="form-control" placeholder="" id="vname" name="vname" value="<?php echo $vehicle_name ?>">
+                                <label for="last">customer first Name</label>
+                                <input type="text" class="form-control" placeholder="" id="customer_fname" name="customer_fname" >
+                            </div>
+                        </div>
+                        <!--  col-md-6   -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="last">customer last Name</label>
+                                <input type="text" class="form-control" placeholder="" id="customer_lname" name="customer_lname" >
                             </div>
                         </div>
                         <!--  col-md-6   -->
@@ -207,93 +193,23 @@ $vehicle_id = base64_decode($vehicle_id);
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="company">Customer Name</label>
-                                <input type="text" class="form-control" placeholder="" name="customername" id="customername" value="<?php echo $customer_name ?>">
+                                <label for="company">Customer Email</label>
+                                <input type="text" class="form-control" placeholder="" name="customer_email" id="customer_email" >
                             </div>
 
 
                         </div>
-                        <!--  col-md-6   -->
-
                         <div class="col-md-6">
-
                             <div class="form-group">
-                                <label for="phone">Arrival Date and time</label>
-
-                                <div class="row">
-
-                                    <div class="col-md-5">
-                                        <input type="date" name="arrivalDate" id="arrivalDate" class="form-control" placeholder="Arrival Date" value="<?php echo date('Y-m-d',strtotime($arrived_on)) ?>"/>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="time" name="arrivalTime" id="arrivalTime" class="form-control" placeholder="Arrival time" value="<?php echo date('H:i:s',strtotime($arrived_on)) ?>"/>
-                                    </div>
-                                    <div class="col-md-1" style="left:-10px;">
-                                        <button type="button" onclick=setNow() class="btn btn-info">set to now</button>
-                                    </div>
-                                </div>
-
+                                <label for="company">Customer Contact</label>
+                                <input type="text" class="form-control" placeholder="" name="customer_contact" id="customer_contact">
                             </div>
+
                         </div>
-                        <!--  col-md-6   -->
                     </div>
                     <!--  row   -->
-
-
-                    <div class="row">
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="phone">Delivery Date and time</label>
-
-                                <div class="row">
-
-                                    <div class="col-md-5">
-                                        <input type="date" name="deliverydate" id="deliverydate" class="form-control" placeholder="Delivery Date" value="<?php echo date('Y-m-d',strtotime($delivered_on)) ?>"/>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <input type="time" name="deliverytime" id="deliverytime" class="form-control" placeholder="Delivery time" value="<?php echo date('H:i:s',strtotime($delivered_on)) ?>"/>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <!--  col-md-6   -->
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="url">Task Charges</label>
-                                <input type="text" class="form-control" placeholder="in LKR" id="charge" name="charge" value="<?php echo $task_charge ?>">
-                            </div>
-
-                        </div>
-                        <!--  col-md-6   -->
-
-                        <div class="col-md-12">
-                            <label for="exampleFormControlTextarea1">Vehicle issue</label>
-                            <textarea class="form-control" name="issue" id="exampleFormControlTextarea1" rows="3" style="resize: vertical;"><?php echo $vehicle_issue ?></textarea>
-                        </div>
-
-                    </div>
-                    <!--  row   -->
-
 
                     <br>
-                    <div class="container-all">
-                        <div class="row">
-                            <div class="col-sm-2 imgUp">
-                                <div class="imagePreview" style="background-image: url('../controller/uploads/<?php echo $imageloc ?>')"></div>
-                                <label class="btn btn-primary">
-                                    Vehicle Image Upload<input type="file" class="uploadFile img" name="photo" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;" >
-                                </label>
-                            </div><!-- col-2 -->
-                            <i class="fa fa-plus imgAdd"></i>
-                        </div><!-- row -->
-                    </div><!-- container -->
-
-
-
 
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>

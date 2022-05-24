@@ -7,10 +7,26 @@ $moduleArray = $_SESSION["user_module"];
 include_once '../model/user_model.php';
 $userObj = new User();
 
-$user_id = $_GET["user_id"];
-$return_msg = $_GET["msg"];
 
-$paginationNumber = $_GET["pagination_number"];
+$user_id = 0;
+$paginationNumber = "";
+
+if (isset($_GET["user_id"])){
+    $user_id = $_GET["user_id"];
+}
+
+if(isset($_GET["msg"])){
+    $return_msg = $_GET["msg"];
+    $return_msg = base64_decode($return_msg);
+}else{
+    $return_msg = "";
+}
+
+
+
+if (isset($_GET["pagination_number"])){
+    $paginationNumber = $_GET["pagination_number"];
+}
 if ($paginationNumber == ""){
     $paginationNumber = 0;
     $timesResult = $userObj->getUserSalariesFunctionAll($user_id);
@@ -21,7 +37,7 @@ if ($paginationNumber == ""){
 
 $user_id = base64_decode($user_id);
 
-echo $paginationNumber;
+// echo $paginationNumber;
 
 
 ?>
@@ -61,10 +77,19 @@ echo $paginationNumber;
 </head>
 
 <body>
-    <?php
-    echo $return_msg;
-    ?>
+
     <div class="container">
+
+    <?php
+        if ($return_msg != "") {
+        ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $return_msg ?>
+            </div>
+        <?php
+        }
+        ?>
+
         <div class="row">
             <div class="col-md-2">
                 <img src="../images/iconset/name.png" width="200px" height="100px" />

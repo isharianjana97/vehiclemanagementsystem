@@ -7,7 +7,6 @@ include '../model/user_model.php';
 include '../model/stock_model.php';
 
 $userObj = new User();
-// $stockObj = new Stock();
 
 $userResult= $userObj->getUserTimeTablesFunctionAll();
 
@@ -53,7 +52,7 @@ echo "<br>";
 while($productrow=$userResult->fetch_assoc())
 {
     $product_id=$productrow["user_id"];
-    echo $productrow["user_id"];
+    // echo $productrow["user_id"];
 
     
     $userResultSpecific= $userObj->getUserTimeTablesFunctionSpecificUser($product_id,$date->format('Y-m-d h:i:sa'));
@@ -65,39 +64,44 @@ while($productrow=$userResult->fetch_assoc())
     $totalDiff = new DateTime('NOW');
     $totalLeaveDays = 0;
     $totalLeaveHours = 0;
-
     
     while($userCurr = $userResultSpecific->fetch_assoc()){
 
+        echo $userCurr["userId"]. "<br>";
+
         $first_date = new DateTime($userCurr["off_time"]);
         $second_date = new DateTime($userCurr["arrival_time"]);
-        $difference = $second_date->diff($first_date);
+        $difference = $first_date->diff($second_date);
 
         $totalDiff->add($difference);
-        // echo $difference->format("%Y-%m-%d %H %i %s"). "<br>" ;
+        // echo $totalDiff->format("%Y-%m-%d %H %i %s"). "<br>" ;
 
         // $pri1 = new DateTime($difference);
         $rer = $difference->format("%H");
 
-
-        if ((int)$rer < 8){
+        
+        
+        if ((int)$rer > 8){
+            echo $rer, "<br>";
             $totalLeaveDays++;
         }
 
-        $totalLeaveHours += (int)$rer - 8;
+        if ((8 - (int)$rer) > 0){
+            $totalLeaveHours += 8 - (int)$rer;
+        }
 
         // $spe1D = date_create($userCurr["off_time"]);
         // $diff = date_sub(date_create($userCurr["off_time"]), date_create($userCurr["arrival_time"]));
 
-        // echo $difference->format("%Y-%m-%d %H %i %s"). "<br>" ;
+        // echo $difference->format("%H %i %s"). "<br>" ;
         $counterDays++;
     }
     // echo $counterDays. "\n";
     $totalDiff = $totalDiff->diff(new DateTime('NOW'));
-    echo $totalDiff->format("%Y-%m-%d %H %i %s"). "<br>" ;
+    // echo $totalDiff->format("%Y-%m-%d %H %i %s"). "<br>" ;
 
     // $comp->diff(new DateTime('NOW'));
-    echo $totalLeaveDays. "<br>" ;
+    // echo $totalLeaveDays. "<br>" ;
     // table body
     $fpdf->Cell(30,10,$productrow["id"],1,0,"C");
     $fpdf->Cell(30,10,$productrow["user_fname"]. " ". $productrow["user_lname"] ,1,0,"C");
