@@ -25,8 +25,10 @@ if (!isset($_GET["status"])) {
     switch ($status) {
         case "get_functions":
             $role_id = $_POST["role_id"];
+            
             $moduleResult = $userObj->getModulesByRole($role_id);
-
+            
+            echo "cccccccccccccccccccccccccc". $role_id;
             while ($module_row = $moduleResult->fetch_assoc()) {
                 $module_id = $module_row["module_id"];
                 $functionResult = $userObj->getModuleFunctions($module_id);
@@ -52,6 +54,7 @@ if (!isset($_GET["status"])) {
             break;
 
         case "add_user":
+            echo "xssssssssssss";
 
             $fname = $_POST["fname"];
             $lname = $_POST["lname"];
@@ -62,6 +65,7 @@ if (!isset($_GET["status"])) {
             $user_role = $_POST["user_role"];
             $user_function = $_POST["user_function"];
             $gender = $_POST["gender"];
+
 
             try {
                 if ($fname == "") {
@@ -86,9 +90,9 @@ if (!isset($_GET["status"])) {
 
                     throw new Exception("User Role Cannot be Empty!");
                 }
-                if (sizeof($user_function) == 0) {
-                    throw new Exception("A USer Function Must Be Selected");
-                }
+                // if (sizeof($user_function) == 0) {
+                //     throw new Exception("A USer Function Must Be Selected");
+                // }
 
                 // above  size of get the lenght of the array
                 ///  regular Expression validation
@@ -338,7 +342,7 @@ if (!isset($_GET["status"])) {
             $msg = "User Data Recoded";
             ?>
             <script>
-                window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"
             </script>
             <?php
             break;
