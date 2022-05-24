@@ -223,15 +223,15 @@ $userrow=$userResult->fetch_assoc(); // will convert the record onto associative
                             <div class="col-md-4">
                                <?php
                                $userimage="";
-                               if($userrow["user_image"]=="")
+                               if($userrow["profile_img"]=="")
                                {
                                    $userimage="defaultImage.jpg";
                                }
                                else{
-                                   $userimage=$userrow["user_image"];
+                                   $userimage=$userrow["profile_img"];
                                }
                                ?>
-                                <img src="../images/user_images/<?php echo $userimage;?>" width="100" height="120px"/>
+                                <img src="../controller/uploads/<?php echo $userimage;?>" width="100" height="120px"/>
                             </div>
                         </div>
                             

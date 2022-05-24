@@ -268,17 +268,17 @@ $userrow=$userResult->fetch_assoc();
                                 <br/>
                                  <?php
                                $userimage="";
-                               if($userrow["user_image"]=="")
+                               if($userrow["profile_img"]=="")
                                {
                                    $userimage="defaultImage.jpg";
                                }
                                else{
-                                   $userimage=$userrow["user_image"];
+                                   $userimage=$userrow["profile_img"];
                                }
                                ?>
-                                <img id="imgprev" src="../images/user_images/<?php echo $userimage   ?>" width="60" height="80"/>
+                                <img id="imgprev" src="../controller/uploads/<?php echo $userimage;   ?>" width="60" height="80"/>
                            
-                                <input type="hidden" name="prev_image" value="<?php echo $userimage   ?>" />
+                               
                             </div>                      <!--   Enter User image -->
                             
                             
@@ -286,7 +286,7 @@ $userrow=$userResult->fetch_assoc();
                             
                         </div>
                             
-                            <div class="row">
+                        <div class="row">
                             <div class="col-md-12">
                                 &nbsp;
                             </div>

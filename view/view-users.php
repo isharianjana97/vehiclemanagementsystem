@@ -7,7 +7,7 @@ include '../model/user_model.php';
 $userObj = new User();
 //   getting all users
 
-$userResult = $userObj->getAllUsers();
+$userResult = $userObj->getAllUsers1();
 
 $moduleArray = $_SESSION["user_module"];
 ?>
@@ -80,10 +80,10 @@ $moduleArray = $_SESSION["user_module"];
                         while ($user_row = $userResult->fetch_assoc()) {
                             $user_id =  base64_encode($user_row["user_id"]);
 
-                            if ($user_row["user_image"] == "") {
+                            if ($user_row["profile_img"] == "") {
                                 $userImage = "defaultImage.jpg";
                             } else {
-                                $userImage = $user_row["user_image"];
+                                $userImage = $user_row["profile_img"];
                             }
 
 
@@ -92,7 +92,9 @@ $moduleArray = $_SESSION["user_module"];
 
                             <tr>
                                 <td>
-                                    <img src="../images/user_images/<?php echo $userImage ?> " width="60" height="80px" />
+                                   <!-- <img id="imgprev" src="../controller/uploads/<?php echo $userimage;   ?>" width="60" height="80"/>-->
+                                    <img src="../controller/uploads/<?php echo $userImage ?> " width="60" height="80px" />
+
                                 </td>
                                 <td><?php echo ucwords($user_row["user_fname"] . " " . $user_row["user_lname"]);    ?></td>
                                 <td><?php echo $user_row["user_nic"];  ?></td>

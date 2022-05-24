@@ -1,6 +1,6 @@
 <?php
 
-include_once '../commons/dbconnection.php';
+include_once '../commons/dbConnection.php';
 $dbconnection= new dbConnection();
 
 class Category{

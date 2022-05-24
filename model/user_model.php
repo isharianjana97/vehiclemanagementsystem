@@ -23,7 +23,7 @@ class User
         $result = $conn->query($sql);
         return $result;
     }
-    public function getUserRoles()//
+    public function getUserRoles()
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM role";
@@ -57,9 +57,9 @@ class User
                                 user_nic,
                                 user_cno1,
                                 user_cno2,
-                               user_image,
-                               user_role)
-                             VALUES(
+                                profile_img,
+                                user_role)
+                                VALUES(
                             '$user_fname','$user_lname','$user_email','$user_gender',"
             . "'$user_nic','$user_cno1','$user_cno2','$user_image','$user_role')";
         $result = $conn->query($sql) or die($conn->error);
@@ -82,6 +82,13 @@ class User
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM user u, role r WHERE u.user_role= r.role_id";
+        $result = $conn->query($sql) or die($conn->error);
+        return $result;
+    }
+    public function getAllUsers1()
+    {
+        $conn = $GLOBALS["conn"];
+        $sql = "SELECT * FROM user u, role r WHERE u.user_role= r.role_id ORDER BY user_id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -181,9 +188,9 @@ class User
 
     public function getUserTimeTablesFunctionAll()
     {
-        $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY userId) sub ORDER BY id DESC";
         
+        $conn = $GLOBALS["conn"];
+        $sql = "SELECT * FROM (SELECT DISTINCT * FROM user_time_table, user WHERE user_time_table.userId = user.user_id  GROUP BY user_time_table.userId) sub ORDER BY id DESC";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }

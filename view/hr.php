@@ -7,21 +7,36 @@ $moduleArray = $_SESSION["user_module"];
 include_once '../model/user_model.php';
 $userObj = new User();
 
-$user_id = $_GET["user_id"];
-$return_msg = $_GET["msg"];
+$user_id = 0;
+$paginationNumber = "";
+if (isset($_GET['user_id'])){
+    $user_id = $_GET["user_id"];
+}
 
-$paginationNumber = $_GET["pagination_number"];
-if ($paginationNumber == ""){
+if(isset($_GET["msg"])){
+    $return_msg = $_GET["msg"];
+}else{
+    $return_msg = "";
+}
+if ($return_msg != "") {
+    $return_msg = base64_decode($return_msg);
+}
+
+if (isset($_GET["pagination_number"])){
+    $paginationNumber = $_GET["pagination_number"];
+}
+if ($paginationNumber == "") {
     $paginationNumber = 0;
     $timesResult = $userObj->getUserTimeTablesFunction($user_id);
-}else{
+} else {
     $paginationNumber = (int)$paginationNumber;
     $timesResult = $userObj->getUserTimeTablesPaginationFunction($paginationNumber);
 }
 
+
 $user_id = base64_decode($user_id);
 
-echo $paginationNumber;
+// echo $paginationNumber;
 
 
 ?>
@@ -61,10 +76,18 @@ echo $paginationNumber;
 </head>
 
 <body>
-    <?php
-    echo $return_msg;
-    ?>
     <div class="container">
+
+        <?php
+        if ($return_msg != "") {
+        ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $return_msg ?>
+            </div>
+        <?php
+        }
+        ?>
+
         <div class="row">
             <div class="col-md-2">
                 <img src="../images/iconset/name.png" width="200px" height="100px" />
@@ -99,18 +122,18 @@ echo $paginationNumber;
                     <li> <a href="../view/dashboard.php">Dashboard</a></li>
                 </ul>
             </div>
-            
+
         </div>
         <div class="row">
             <div class="col-md-3">
                 <ul class="list-group">
                     <?php include_once '../includes/hr-navigation.php'; ?>
-                    <div class="col-md-4">    
-                            <a href="./generated_attendance_report.php?status=save" class="btn btn-success">
-                                <span class="glyphicon glyphicon-floppy-save"></span> &nbsp;
-                                Save Attendance Report
-                            </a>
-                        </div> 
+                    <div class="col-md-4">
+                        <a href="./generated_attendance_report.php?status=save" class="btn btn-success">
+                            <span class="glyphicon glyphicon-floppy-save"></span> &nbsp;
+                            Save Attendance Report
+                        </a>
+                    </div>
             </div>
             <div class="col-md-9">
                 <div class="tableFixHead">
@@ -145,7 +168,7 @@ echo $paginationNumber;
                                 <tr>
                                     <td><?php echo $user_row["id"];  ?></td>
                                     <td>
-                                        <img src="../images/user_images/<?php echo $user_row["profile_img"] ?> " width="60" height="80px" />
+                                        <img src="../controller/uploads/<?php echo $user_row["profile_img"] ?> " width="60" height="80px" />
                                     </td>
                                     <td><?php echo $user_row["user_id"];  ?></td>
                                     <td><?php echo ucwords($user_row["user_fname"] . " " . $user_row["user_lname"]) ?></td>
@@ -184,11 +207,11 @@ echo $paginationNumber;
 
                             <nav aria-label="Page float-right navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber-1 ?>">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber+1 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+1 ?>"><?php echo $paginationNumber+2 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+2 ?>"><?php echo $paginationNumber+3 ?></a></li>
-                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber+3 ?>">Next</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber - 1 ?>">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"><?php echo $paginationNumber + 1 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber + 1 ?>"><?php echo $paginationNumber + 2 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber + 2 ?>"><?php echo $paginationNumber + 3 ?></a></li>
+                                    <li class="page-item"><a class="page-link" href="../view/hr.php?pagination_number=<?php echo $paginationNumber + 3 ?>">Next</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -199,7 +222,7 @@ echo $paginationNumber;
                                 <input type="text" name="userId" id="userId" class="form-control" placeholder="userId" />
                             </div>
                             <div class="col-md-3">
-                                <input type="date" name="arrivalDate" id="arrivalDate" class="form-control" placeholder="Arrival Date" />
+                                <input type="date" name="arrivalDate" id="arrivalDate" class="form-control" placeholder="Arrival Date"  />
                             </div>
                             <div class="col-md-3">
                                 <input type="time" name="arrivalTime" id="arrivalTime" class="form-control" placeholder="Arrival time" />
@@ -260,18 +283,18 @@ echo $paginationNumber;
         document.getElementById('arrivalTime').value = displayTime;
     }
 
-    let timeText = $( ".arrival-time" );//
-    console.log("yyyyyyyyyyyyyyyyyyyyyyyy")
-    for (let i=0;i<timeText.length;i++){
+    let timeText = $(".arrival-time");
+    console.log(timeText[0])
+    for (let i = 0; i < timeText.length; i++) {
         let ele = timeText[i];
         let timeTextcurr = ele.innerText.trim();
         let result = timeTextcurr.substring(0, 19);
         ele.innerText = result;
     }
 
-    timeText = $( ".off-time" );
+    timeText = $(".off-time");
     console.log(timeText[0])
-    for (let i=0;i<timeText.length;i++){
+    for (let i = 0; i < timeText.length; i++) {
         let ele = timeText[i];
         let timeTextcurr = ele.innerText.trim();
         if (timeTextcurr == "Leave Now")
