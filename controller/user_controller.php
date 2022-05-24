@@ -25,8 +25,9 @@ if (!isset($_GET["status"])) {
     switch ($status) {
         case "get_functions":
             $role_id = $_POST["role_id"];
+            
             $moduleResult = $userObj->getModulesByRole($role_id);
-
+            
             while ($module_row = $moduleResult->fetch_assoc()) {
                 $module_id = $module_row["module_id"];
                 $functionResult = $userObj->getModuleFunctions($module_id);
@@ -86,9 +87,9 @@ if (!isset($_GET["status"])) {
 
                     throw new Exception("User Role Cannot be Empty!");
                 }
-                if (sizeof($user_function) == 0) {
-                    throw new Exception("A USer Function Must Be Selected");
-                }
+                // if (sizeof($user_function) == 0) {
+                //     throw new Exception("A USer Function Must Be Selected");
+                // }
 
                 // above  size of get the lenght of the array
                 ///  regular Expression validation
@@ -290,8 +291,6 @@ if (!isset($_GET["status"])) {
                 }
 
 
-                $userObj->updateUser($user_id, $fname, $lname, $email, $gender, $nic, $cno1, $cno2, $imagename, $user_role);  //pass update user functions 
-
                 $userObj->removeUserFunctions($user_id);   ///  delete assigned functions
 
 
@@ -339,7 +338,7 @@ if (!isset($_GET["status"])) {
             $msg = "User Data Recoded";
             ?>
             <script>
-                window.location = "../view/hr.php?msg=<?php echo $msg; ?>&pagination_number=<?php echo $paginationNumber ?>"
+                window.location = "../view/hr.php?pagination_number=<?php echo $paginationNumber ?>"
             </script>
             <?php
             break;

@@ -4,8 +4,9 @@ include_once '../commons/dbConnection.php';
 $dbconnection = new dbConnection();
 
 
-class Vehicle
+class Customer
 {
+
 
     public function addNewDeal($vid, $vname, $customername, $arrivalDate, $arrivalTime, $deliverydate, $deliverytime, $charge, $issue, $photo)
     {
@@ -13,26 +14,26 @@ class Vehicle
 
         $conn = $GLOBALS["conn"];
         try {
-            $sql = "INSERT INTO vehicle_management_db.vehicle_service
+            $sql = "INSERT INTO customer_management_db.customer_service
             (
-            vehicle_id,
-            vehicle_name,
-            vehicle_issue,
+            customer_id,
+            customer_name,
+            customer_issue,
             customer_name,
             arrived_on,
             delivered_on,
             task_charge,
-            vehicle_image)
+            customer_image)
             VALUES
             (
                 '$vid', 
                 '$vname', 
-                '$issue',
+                '$issue', 
                 '$customername', 
                 '$arrivalDate $arrivalTime', 
                 '$deliverydate $deliverytime', 
                 '$charge', 
-                '$photo'
+                '$photo' 
             )";
         } catch (Exception $e) {
 
@@ -49,16 +50,16 @@ class Vehicle
 
         $conn = $GLOBALS["conn"];
         try {
-            $sql = "UPDATE vehicle_management_db.vehicle_service 
+            $sql = "UPDATE customer_management_db.customer_service 
                     SET 
-                        vehicle_id = '$vid',
-                        vehicle_name = '$vname',
-                        vehicle_issue = '$issue',
+                        customer_id = '$vid',
+                        customer_name = '$vname',
+                        customer_issue = '$issue',
                         customer_name = '$customername',
                         arrived_on = '$arrivalDate $arrivalTime',
                         delivered_on = '$deliverydate $deliverytime',
                         task_charge = '$charge', 
-                        vehicle_image = '$photo'
+                        customer_image = '$photo'
                     WHERE
                         id = '$recode_id'";
 
@@ -72,10 +73,10 @@ class Vehicle
         return $result;
     }
 
-    public function getUserById($user_id)
+    public function getCustomers()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM user u, role r WHERE u.user_role=r.role_id AND u.user_id='$user_id'";
+        $sql = "SELECT * FROM customer_management_db.customer";
         $result = $conn->query($sql);
         return $result;
     }
@@ -134,13 +135,14 @@ class Vehicle
     }
 
 
-    public function getAllUsers()
+    public function getAllCustomers()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM user u, role r WHERE u.user_role= r.role_id";
+        $sql = "SELECT * FROM vehicle_management_db.customer";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
+    
     public function getSpecificUser($user_id)
     {
         $conn = $GLOBALS["conn"];
@@ -173,62 +175,52 @@ class Vehicle
     }
 
 
-    public function updateUser(
-        $user_id,
-        $user_fname,
-        $user_lname,
-        $user_email,
-        $user_gender,
-        $user_nic,
-        $user_cno1,
-        $user_cno2,
-        $user_image,
-        $user_role
+    public function modifyCustomer(
+        $customer_ids, $customer_fname, $customer_lname, $customer_email, $customer_contact
     ) {
-
         $conn = $GLOBALS["conn"];
-        if ($user_image != "") {
-            $sql = "UPDATE user SET "
-                . "user_fname='$user_fname',"
-                . "user_lname='$user_lname',"
-                . "user_email='$user_email',"
-                . "user_gender='$user_gender',"
-                . "user_nic='$user_nic',"
-                . "user_cno1='$user_cno1',"
-                . "user_cno2='$user_cno2',"
-                . "user_image='$user_image',"
-                . "user_role='$user_role' "
-                . "WHERE user_id='$user_id'";
-        } else {
-            $sql = "UPDATE user SET "
-                . "user_fname='$user_fname',"
-                . "user_lname='$user_lname',"
-                . "user_email='$user_email',"
-                . "user_gender='$user_gender',"
-                . "user_nic='$user_nic',"                   //user image is not selected because if he didn't slect an image nothing to update
-                . "user_cno1='$user_cno1',"
-                . "user_cno2='$user_cno2',"
-                . "user_role='$user_role' "
-                . "WHERE user_id='$user_id'";
-        }
-
+        $sql = "UPDATE `vehicle_management_db`.`customer`
+                SET
+                `customer_fname` = '$customer_fname',
+                `customer_lname` = '$customer_lname',
+                `customer_email` = '$customer_email',
+                `customer_contact` = '$customer_contact'
+                WHERE `customer_id` = '$customer_ids'";
 
         $result = $conn->query($sql) or die($conn->error) or die($conn->error);
+        return $result;
     }
 
-    public function removeVehicleRecodeFunctions($vehicle_id)
+    public function addCustomer($customer_fname, $customer_lname, $customer_email, $customer_contact) {
+        $conn = $GLOBALS["conn"];
+        $sql = "INSERT INTO `vehicle_management_db`.`customer`
+        (`customer_fname`,
+        `customer_lname`,
+        `customer_email`,
+        `customer_contact`)
+        VALUES
+        ('$customer_fname',
+        '$customer_lname',
+        '$customer_email',
+        '$customer_contact')";
+
+        $result = $conn->query($sql) or die($conn->error) or die($conn->error);
+        return $result;
+    }
+
+    public function removecustomerRecodeFunctions($customer_id)
     {
         $conn = $GLOBALS["conn"];
-        $sql = "DELETE FROM vehicle_service WHERE id='$vehicle_id'";
+        $sql = "DELETE FROM customer WHERE customer_id='$customer_id'";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
 
 
-    public function finishDealOfAVehicle($vehicle_id,$field_name,$data)
+    public function finishDealOfAcustomer($customer_id,$field_name,$data)
     {
         $conn = $GLOBALS["conn"];
-        $sql = "UPDATE vehicle_service SET $field_name='$data' where id = '$vehicle_id'";
+        $sql = "UPDATE customer_service SET $field_name='$data' where id = '$customer_id'";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -238,15 +230,6 @@ class Vehicle
     {
         $conn = $GLOBALS["conn"];
         $sql = "SELECT * FROM user_function WHERE user_id='$user_id'";
-        $result = $conn->query($sql) or die($conn->error);
-        return $result;
-    }
-
-
-    public function getVehicleAll()
-    {
-        $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM vehicle_service";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -268,10 +251,10 @@ class Vehicle
         return $result;
     }
 
-    public function getVehicleAllFunction()
+    public function getcustomerAllFunction()
     {
         $conn = $GLOBALS["conn"];
-        $sql = "SELECT * FROM vehicle_service ORDER BY id DESC LIMIT 15,5";
+        $sql = "SELECT * FROM customer_service ORDER BY id DESC LIMIT 15,5";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
@@ -285,11 +268,11 @@ class Vehicle
     }
 
 
-    public function getVehiclePaginationFunction($paginationNumber)
+    public function getCustomerPaginationFunction($paginationNumber)
     {
         $conn = $GLOBALS["conn"];
         $startAt = 5 * $paginationNumber;
-        $sql = "SELECT * FROM vehicle_service ORDER BY id DESC LIMIT $startAt,5";
+        $sql = "SELECT * FROM customer ORDER BY customer_id DESC LIMIT $startAt,5";
         $result = $conn->query($sql) or die($conn->error);
         return $result;
     }
